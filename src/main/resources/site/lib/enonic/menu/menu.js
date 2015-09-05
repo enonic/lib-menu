@@ -1,5 +1,3 @@
-exports.menu = {};
-exports.data = require('data.js').data;
 var portal = require('/lib/xp/portal');
 var contentSvc = require('/lib/xp/content');
 
@@ -8,16 +6,14 @@ var contentSvc = require('/lib/xp/content');
  * @param {integer} levels - menu levels to get
  * @returns {Array}
  */
-exports.menu.get = function (levels) {
-    levels = (exports.data.isInt(levels) ? levels : 1);
+exports.getMenuTree = function (levels) {
+    levels = (isInt(levels) ? levels : 1);
     var site = portal.getSite();
-
-
 
     if (!site) {
         return [];
     }
-    var menu = getSubMenus(site, levels);
+    var menu = exports.getSubMenus(site, levels);
 
     return menu;
 };
@@ -28,7 +24,7 @@ exports.menu.get = function (levels) {
  * @param {Integer} levels - The number of submenus to retrieve
  * @return {Array} Array of submenus
  */
-function getSubMenus(parentContent, levels) {
+exports.getSubMenus = function(parentContent, levels) {
     var subMenus = [];
 
     if (parentContent.type === 'portal:site' && isMenuItem(parentContent)) {
@@ -83,7 +79,7 @@ function isMenuItem(content) {
 function menuItemToJson(content, levels) {
     var subMenus = [];
     if (levels > 0) {
-        subMenus = getSubMenus(content, levels);
+        subMenus = exports.getSubMenus(content, levels);
     }
 
     var appNamePropertyName = app.name.replace(/\./g, '-');
@@ -98,3 +94,14 @@ function menuItemToJson(content, levels) {
         children: subMenus
     };
 }
+
+/**
+ * Check if value is integer
+ * @param value
+ * @returns {boolean}
+ */
+function isInt(value) {
+    return !isNaN(value) &&
+           parseInt(Number(value)) == value &&
+           !isNaN(parseInt(value, 10));
+};
