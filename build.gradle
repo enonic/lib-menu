@@ -18,7 +18,7 @@ version = '1.0.0-SNAPSHOT'
 
 app {
     name = 'com.enonic.lib.menu'
-    displayName = 'MyApp'
+    displayName = 'Menu library'
     vendorName = 'Enonic AS'
     vendorUrl = 'http://enonic.com'
 }
@@ -32,10 +32,6 @@ dependencies {
     compile "com.enonic.xp:portal-api:${xpVersion}"
     include "com.enonic.xp:lib-content:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
-    include "com.enonic.xp:lib-thymeleaf:${xpVersion}"
-    include "com.enonic.xp:lib-xslt:${xpVersion}"
-    include "com.enonic.xp:lib-mustache:${xpVersion}"
-    include "com.enonic.xp:lib-i18n:${xpVersion}"
 }
 
 repositories {
