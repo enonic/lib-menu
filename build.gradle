@@ -15,7 +15,7 @@ buildscript {
 apply plugin: 'com.enonic.xp.app'
 apply plugin: 'maven-publish'
 
-version = '1.0.0-SNAPSHOT'
+version = '1.0.0'
 group = 'com.enonic.lib'
 
 app {
@@ -30,8 +30,6 @@ ext {
 }
 
 dependencies {
-    compile "com.enonic.xp:core-api:${xpVersion}"
-    compile "com.enonic.xp:portal-api:${xpVersion}"
     include "com.enonic.xp:lib-content:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
 }
