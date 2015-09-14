@@ -2,15 +2,15 @@
 
 ## Usage
 
-repositories {
-    maven {
-        url 'http://repo.enonic.net/public'
+    repositories {
+        maven {
+            url 'http://repo.enonic.net/public'
+        }
     }
-}
 
-dependencies {
-    include 'com.enonic.lib:menu:1.0.0'
-}
+    dependencies {
+        include 'com.enonic.lib:menu:1.0.0'
+    }
 
 ## Compatibility
 
