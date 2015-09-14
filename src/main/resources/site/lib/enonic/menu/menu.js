@@ -1,5 +1,5 @@
 var portal = require('/lib/xp/portal');
-var contentSvc = require('/lib/xp/content');
+var contentLib = require('/lib/xp/content');
 
 /**
  * Get menu tree
@@ -31,7 +31,7 @@ exports.getSubMenus = function(parentContent, levels) {
         subMenus.push(menuItemToJson(parentContent, 0));
     }
 
-    var children = contentSvc.getChildren({
+    var children = contentLib.getChildren({
         key: parentContent._id,
         count: 100
     });
