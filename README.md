@@ -8,25 +8,31 @@ To "install" this library you need to update your build.gradle file in root. Add
 
 ### Gradle build script
 
-    repositories {
-        maven {
-            url 'http://repo.enonic.net/public'
-        }
+```
+repositories {
+    maven {
+        url 'http://repo.enonic.net/public'
     }
+}
 
-    dependencies {
-        include 'com.enonic.lib:menu:1.0.0'
-    }
+dependencies {
+    include 'com.enonic.lib:menu:1.0.0'
+}
+```
 
 ### Controllers
 
 In every controller you want to use it (Page, Part or Layout) you just add this at the top of the file:
 
-    var menu = require('/lib/enonic/menu/menu');
+```javascript
+var menu = require('/lib/enonic/menu/menu');
+```
 
 To access any of the functions from this library, just type something like this:
 
-    var menuItems = menu.getMenuTree(2); // Get 2 levels of menu
+```javascript
+var menuItems = menu.getMenuTree(2); // Get 2 levels of menu
+```
 
 ### Mixin X-data
 
