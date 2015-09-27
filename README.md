@@ -2,6 +2,10 @@
 
 ## Usage
 
+To "install" this library you need to update your build.gradle file in root. Add the new dependency (after other dependencies) and make sure the Enonic repository URL is set up for maven.
+
+**Note:** The "gradle watch" command won't detect this change, so use "gradle deploy" after changing your build.gradle file.
+
 ### Gradle build script
 
     repositories {
@@ -16,7 +20,18 @@
 
 ### Controllers
 
+In every controller you want to use it (Page, Part or Layout) you just add this at the top of the file:
+
     var menu = require('/lib/enonic/menu/menu');
+
+To access any of the functions from this library, just type something like this:
+
+    var menuItems = menu.getMenuTree(2); // Get 2 levels of menu
+
+### Mixin X-data
+
+Any content type that may appear in the menu will need a mixin named "menu-item" with a Checkbox field named "menuItem" and a TextLine
+field named "menuName". This mixin must be added as x-data.
 
 ## Compatibility
 
