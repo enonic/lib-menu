@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    include 'com.enonic.lib:menu:1.0.0'
+    include 'com.enonic.lib:menu:1.1.0'
 }
 ```
 
@@ -25,7 +25,7 @@ dependencies {
 In every controller you want to use it (Page, Part or Layout) you just add this at the top of the file:
 
 ```javascript
-var menu = require('/lib/enonic/menu/menu');
+var menu = require('/lib/enonic/menu');
 ```
 
 To access any of the functions from this library, just type something like this:
@@ -44,3 +44,4 @@ field named "menuName". This mixin must be added as x-data.
 | Lib version        | XP version |
 | ------------- | ------------- |
 | 1.0.0 | 6.0.0 |
+| 1.1.0 | 6.1.0 |
