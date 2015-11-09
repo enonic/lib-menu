@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    include 'com.enonic.lib:menu:1.1.0'
+    include 'com.enonic.lib:menu:1.1.1'
 }
 ```
 
@@ -45,3 +45,4 @@ field named "menuName". This mixin must be added as x-data.
 | ------------- | ------------- |
 | 1.0.0 | 6.0.0 |
 | 1.1.0 | 6.1.0 |
+| 1.1.1 | 6.1.0 |
