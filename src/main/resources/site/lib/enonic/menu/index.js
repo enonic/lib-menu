@@ -43,13 +43,15 @@ exports.getSubMenus = function(parentContent, levels) {
 
     levels--;
 
-    children.hits.forEach(function (child) {
-        if (isMenuItem(child)) {
-            subMenus.push(menuItemToJson(child, levels));
-        }
-    });
+	var loopLength = children.hits.length;
+	for (var i = 0; i < loopLength; i++) {
+		var child = children.hits[i];
+		if (isMenuItem(child)) {
+			subMenus.push(menuItemToJson(child, levels));
+		}
+	}
 
-    return subMenus;
+	return subMenus;
 }
 
 
