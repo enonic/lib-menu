@@ -1,0 +1,19 @@
+<ul class="main-nav visible-md-block visible-lg-block">
+	<!--/*
+		INFO: Remove the comment around this block to add a "Home" link first in the menu.
+
+	<li data-th-classappend="${(site._path == content._path ? 'page_item active' : 'page_item')}">
+		<a data-th-href="${portal.pageUrl({'_path=' + site._path})}" href="/">
+			Home
+		</a>
+	</li>
+	*/-->
+	<li data-th-each="menuItem : ${menuItems}"
+		data-th-class="${(menuItem.path == content._path || menuItem.path == parentpath ? 'page_item active' : 'page_item')}"
+		data-th-classappend="${menuItem.hasChildren ? 'has-children' : ''}">
+		<a href="#"
+			data-th-href="${portal.pageUrl({'_path=' + menuItem.path})}"
+			data-th-text="${menuItem.menuName} ?: ${menuItem.displayName}"
+			data-th-target="${menuItem.type == appName + ':url' ? '_blank' : ''}">Page</a>
+	</li>
+</ul>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	DESCRIPTION:
+	The default settings we find most useful (and not bloated) for menues on most websites. This is the recommended mixin.
+-->
+<mixin>
+	<display-name>Menu settings</display-name>
+	<items>
+		<input type="Checkbox" name="menuItem">
+			<label>Show in Menu?</label>
+			<occurrences minimum="0" maximum="1"/>
+		</input>
+		<input type="TextLine" name="menuName">
+			<label>Override menu name</label><!-- Name to be used in menu. Optional -->
+			<occurrences minimum="0" maximum="1"/>
+		</input>
+	</items>
+</mixin>
