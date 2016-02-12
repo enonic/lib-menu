@@ -90,6 +90,13 @@ function menuItemToJson(content, levels) {
 	 var isActive = false;
 	 var newWindow = false; // TODO: Check precense of setting for this ...
 
+	 var currentContent = portal.getContent();
+
+	 // Is the currently viewed content the current menuitem we are processing?
+	 if ( content._path == currentContent._path ) {
+		 isActive = true;
+	 }
+
     var menuItem = content.x[globals.appPath]['menu-item'];
 
     return {
@@ -116,4 +123,4 @@ function isInt(value) {
     return !isNaN(value) &&
            parseInt(Number(value)) == value &&
            !isNaN(parseInt(value, 10));
-};
+}
