@@ -12,7 +12,7 @@ Some classes are added to the wrapping `<li>` element to assist your stylesheets
 * *First: Add one of the mixins!*
 * Just select one of the HTML-files in this folder and copy all the code
 * Go to your app's source code and add this code anywhere you want (in a part or page)
-* Make sure your controller uses `libs.menu.getMenuTree(x)` and sends this into the view as a parameter called `menuItems`, see general installation guide in the root README.md file for more info.
+* Make sure your controller uses `libs.menu.getMenuTree(x)` and sends this into the view as a parameter called `menuItems`, see general installation guide in the root `README.md` file for more info.
 
 Now you are done. Edit some content in your Enonic XP Admin interface and choose to display them in the menu. Voíla!
 
