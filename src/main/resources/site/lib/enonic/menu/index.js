@@ -92,9 +92,15 @@ function menuItemToJson(content, levels) {
 
 	 var currentContent = portal.getContent();
 
+	 // Is the menuitem we are processing in the currently viewed content's path?
+	 if ( content._path == currentContent._path.substring(0,content._path.length) ) {
+		 inPath = true;
+	 }
+
 	 // Is the currently viewed content the current menuitem we are processing?
 	 if ( content._path == currentContent._path ) {
 		 isActive = true;
+		 inPath = false; // Reset this so an menuitem isn't both in a path and active (makes no sense)
 	 }
 
     var menuItem = content.x[globals.appPath]['menu-item'];
