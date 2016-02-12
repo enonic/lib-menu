@@ -37,9 +37,8 @@ exports.getSubMenus = function(parentContent, levels) {
 
     var children = contentLib.getChildren({
         key: parentContent._id,
-        count: 100
+        count: 200
     });
-
 
     levels--;
 
