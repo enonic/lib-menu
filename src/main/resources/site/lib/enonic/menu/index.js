@@ -85,8 +85,11 @@ function menuItemToJson(content, levels) {
         subMenus = exports.getSubMenus(content, levels);
     }
 
-    var menuItem = content.x[globals.appPath]['menu-item'];
 	 var inPath = false;
+	 var isActive = false;
+
+    var menuItem = content.x[globals.appPath]['menu-item'];
+
     return {
         displayName: content.displayName,
         menuName: menuItem.menuName && menuItem.menuName.length ? menuItem.menuName : null,
@@ -95,6 +98,7 @@ function menuItemToJson(content, levels) {
         id: content._id,
         hasChildren: subMenus.length > 0,
         inPath: inPath,
+        isActive: isActive,
         type: content.type,
         children: subMenus
     };
