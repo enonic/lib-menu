@@ -87,6 +87,7 @@ function menuItemToJson(content, levels) {
 
 	 var inPath = false;
 	 var isActive = false;
+	 var newWindow = false; // TODO: Check precense of setting for this ...
 
     var menuItem = content.x[globals.appPath]['menu-item'];
 
@@ -99,6 +100,7 @@ function menuItemToJson(content, levels) {
         hasChildren: subMenus.length > 0,
         inPath: inPath,
         isActive: isActive,
+        newWindow: newWindow,
         type: content.type,
         children: subMenus
     };
