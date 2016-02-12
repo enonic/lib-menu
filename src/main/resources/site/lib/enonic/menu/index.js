@@ -91,8 +91,8 @@ function menuItemToJson(content, levels) {
         name: content._name,
         id: content._id,
         hasChildren: subMenus.length > 0,
-        children: subMenus,
-        type: content.type
+        type: content.type,
+        children: subMenus
     };
 }
 
