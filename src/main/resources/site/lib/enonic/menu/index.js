@@ -88,7 +88,6 @@ function menuItemToJson(content, levels) {
 
 	 var inPath = false;
 	 var isActive = false;
-	 var newWindow = false; // TODO: Check precense of setting for this ...
 
 	 var currentContent = portal.getContent();
 
@@ -114,7 +113,7 @@ function menuItemToJson(content, levels) {
         hasChildren: subMenus.length > 0,
         inPath: inPath,
         isActive: isActive,
-        newWindow: newWindow,
+        newWindow: menuItem.newWindow ? menuItem : false,
         type: content.type,
         children: subMenus
     };
