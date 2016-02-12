@@ -1,12 +1,16 @@
 var portal = require('/lib/xp/portal');
 var contentLib = require('/lib/xp/content');
 
+var globals = {
+	appPath: app.name.replace(/\./g, '-')
+}
+
 /**
  * Get menu tree
  * @param {integer} levels - menu levels to get
  * @returns {Array}
  */
-exports.getMenuTree = function (levels) {
+exports.getMenuTree = function(levels) {
     levels = (isInt(levels) ? levels : 1);
     var site = portal.getSite();
 
@@ -59,8 +63,7 @@ function isMenuItem(content) {
     if (!extraData) {
         return false;
     }
-    var appNamePropertyName = app.name.replace(/\./g, '-');
-    var extraDataModule = extraData[appNamePropertyName];
+    var extraDataModule = extraData[globals.appPath];
     if (!extraDataModule || !extraDataModule['menu-item']) {
         return false;
     }
@@ -82,8 +85,8 @@ function menuItemToJson(content, levels) {
         subMenus = exports.getSubMenus(content, levels);
     }
 
-    var appNamePropertyName = app.name.replace(/\./g, '-');
-    var menuItem = content.x[appNamePropertyName]['menu-item'];
+    var menuItem = content.x[globals.appPath]['menu-item'];
+	 var inPath = false;
     return {
         displayName: content.displayName,
         menuName: menuItem.menuName && menuItem.menuName.length ? menuItem.menuName : null,
@@ -91,6 +94,7 @@ function menuItemToJson(content, levels) {
         name: content._name,
         id: content._id,
         hasChildren: subMenus.length > 0,
+        inPath: inPath,
         type: content.type,
         children: subMenus
     };
