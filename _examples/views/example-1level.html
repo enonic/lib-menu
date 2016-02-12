@@ -2,20 +2,26 @@
 	<ul class="menu-main">
 		<!--/*
 			INFO: Remove the comment around this block to add a "Home" link first in the menu.
+			For this to work you must send in two parameters:
+				* site = portal.getSite();
+				* content = portal.getContent();
 
-		<li data-th-classappend="${(site._path == content._path ? 'page_item active' : 'page_item')}">
+		<li data-th-class="${(site._path == content._path ? 'page_item active' : 'page_item')}">
 			<a data-th-href="${portal.pageUrl({'_path=' + site._path})}" href="/">
 				Home
 			</a>
 		</li>
 		*/-->
 		<li data-th-each="menuItem : ${menuItems}"
-			data-th-class="${(menuItem.path == content._path || menuItem.path == parentpath ? 'page_item active' : 'page_item')}"
-			data-th-classappend="${menuItem.hasChildren ? 'has-children' : ''}">
-			<a href="#"
-				data-th-href="${portal.pageUrl({'_path=' + menuItem.path})}"
+			data-th-class="${
+				'page_item' +
+				(menuItem.hasChildren ? ' has-children' : '') +
+				(menuItem.inPath ? ' in-path' : '') +
+				(menuItem.isActive ? ' active' : '')
+			}">
+			<a href="#" data-th-href="${portal.pageUrl({'_path=' + menuItem.path})}"
 				data-th-text="${menuItem.menuName} ?: ${menuItem.displayName}"
-				data-th-target="${menuItem.type == appName + ':url' ? '_blank' : ''}">Page</a>
+				data-th-target="${menuItem.newWindow ? '_blank' : ''}">Page</a>
 		</li>
 	</ul>
 </nav>
