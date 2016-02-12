@@ -113,7 +113,7 @@ function menuItemToJson(content, levels) {
         hasChildren: subMenus.length > 0,
         inPath: inPath,
         isActive: isActive,
-        newWindow: menuItem.newWindow ? menuItem : false,
+        newWindow: menuItem.newWindow ? menuItem.newWindow : false,
         type: content.type,
         children: subMenus
     };
