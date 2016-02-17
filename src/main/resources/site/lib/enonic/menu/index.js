@@ -13,13 +13,13 @@ var globals = {
  * @returns {Array}
  */
 exports.getMenuTree = function(levels) {
-    levels = (isInt(levels) ? levels : 1);
+    var menu = [];
     var site = libs.portal.getSite();
+    levels = (isInt(levels) ? levels : 1);
 
-    if (!site) {
-        return [];
+    if (site) {
+        menu = exports.getSubMenus(site, levels);
     }
-    var menu = exports.getSubMenus(site, levels);
 
     return menu;
 };
