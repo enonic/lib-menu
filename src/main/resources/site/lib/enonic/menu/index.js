@@ -53,7 +53,7 @@ exports.getSubMenus = function(parentContent, levels) {
 	}
 
 	return subMenus;
-}
+};
 
 
 /**
@@ -71,9 +71,8 @@ function isMenuItem(content) {
         return false;
     }
     var menuItemMetadata = extraDataModule['menu-item'] || {};
-    var menuItemValue = menuItemMetadata['menuItem'];
 
-    return menuItemValue;
+    return menuItemMetadata['menuItem'];
 }
 
 /**
