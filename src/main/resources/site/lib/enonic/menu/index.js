@@ -1,9 +1,11 @@
-var portal = require('/lib/xp/portal');
-var contentLib = require('/lib/xp/content');
+var libs = {
+    portal: require('/lib/xp/portal'),
+    content: require('/lib/xp/content')
+};
 
 var globals = {
 	appPath: app.name.replace(/\./g, '-')
-}
+};
 
 /**
  * Get menu tree
@@ -12,7 +14,7 @@ var globals = {
  */
 exports.getMenuTree = function(levels) {
     levels = (isInt(levels) ? levels : 1);
-    var site = portal.getSite();
+    var site = libs.portal.getSite();
 
     if (!site) {
         return [];
@@ -35,7 +37,7 @@ exports.getSubMenus = function(parentContent, levels) {
         subMenus.push(menuItemToJson(parentContent, 0));
     }
 
-    var children = contentLib.getChildren({
+    var children = libs.content.getChildren({
         key: parentContent._id,
         count: 200
     });
@@ -89,7 +91,7 @@ function menuItemToJson(content, levels) {
 	 var inPath = false;
 	 var isActive = false;
 
-	 var currentContent = portal.getContent();
+	 var currentContent = libs.portal.getContent();
 
 	 // Is the menuitem we are processing in the currently viewed content's path?
 	 if ( content._path == currentContent._path.substring(0,content._path.length) ) {
