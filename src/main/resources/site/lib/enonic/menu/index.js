@@ -1,12 +1,16 @@
 var portal = require('/lib/xp/portal');
 var contentLib = require('/lib/xp/content');
 
+var globals = {
+	appPath: app.name.replace(/\./g, '-')
+}
+
 /**
  * Get menu tree
  * @param {integer} levels - menu levels to get
  * @returns {Array}
  */
-exports.getMenuTree = function (levels) {
+exports.getMenuTree = function(levels) {
     levels = (isInt(levels) ? levels : 1);
     var site = portal.getSite();
 
@@ -33,19 +37,20 @@ exports.getSubMenus = function(parentContent, levels) {
 
     var children = contentLib.getChildren({
         key: parentContent._id,
-        count: 100
+        count: 200
     });
-
 
     levels--;
 
-    children.hits.forEach(function (child) {
-        if (isMenuItem(child)) {
-            subMenus.push(menuItemToJson(child, levels));
-        }
-    });
+	var loopLength = children.hits.length;
+	for (var i = 0; i < loopLength; i++) {
+		var child = children.hits[i];
+		if (isMenuItem(child)) {
+			subMenus.push(menuItemToJson(child, levels));
+		}
+	}
 
-    return subMenus;
+	return subMenus;
 }
 
 
@@ -59,8 +64,7 @@ function isMenuItem(content) {
     if (!extraData) {
         return false;
     }
-    var appNamePropertyName = app.name.replace(/\./g, '-');
-    var extraDataModule = extraData[appNamePropertyName];
+    var extraDataModule = extraData[globals.appPath];
     if (!extraDataModule || !extraDataModule['menu-item']) {
         return false;
     }
@@ -82,8 +86,24 @@ function menuItemToJson(content, levels) {
         subMenus = exports.getSubMenus(content, levels);
     }
 
-    var appNamePropertyName = app.name.replace(/\./g, '-');
-    var menuItem = content.x[appNamePropertyName]['menu-item'];
+	 var inPath = false;
+	 var isActive = false;
+
+	 var currentContent = portal.getContent();
+
+	 // Is the menuitem we are processing in the currently viewed content's path?
+	 if ( content._path == currentContent._path.substring(0,content._path.length) ) {
+		 inPath = true;
+	 }
+
+	 // Is the currently viewed content the current menuitem we are processing?
+	 if ( content._path == currentContent._path ) {
+		 isActive = true;
+		 inPath = false; // Reset this so an menuitem isn't both in a path and active (makes no sense)
+	 }
+
+    var menuItem = content.x[globals.appPath]['menu-item'];
+
     return {
         displayName: content.displayName,
         menuName: menuItem.menuName && menuItem.menuName.length ? menuItem.menuName : null,
@@ -91,6 +111,9 @@ function menuItemToJson(content, levels) {
         name: content._name,
         id: content._id,
         hasChildren: subMenus.length > 0,
+        inPath: inPath,
+        isActive: isActive,
+        newWindow: menuItem.newWindow ? menuItem.newWindow : false,
         type: content.type,
         children: subMenus
     };
@@ -105,4 +128,4 @@ function isInt(value) {
     return !isNaN(value) &&
            parseInt(Number(value)) == value &&
            !isNaN(parseInt(value, 10));
-};
+}
