@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    include 'com.enonic.lib:menu:1.1.1'
+    include 'com.enonic.lib:menu:1.2.0'
 }
 ```
 
