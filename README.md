@@ -34,10 +34,21 @@ To access any of the functions from this library, just type something like this:
 var menuItems = menu.getMenuTree(2); // Get 2 levels of menu
 ```
 
-### Mixin X-data
+### Mixin
 
 Any content type that may appear in the menu will need a mixin named "menu-item" with a Checkbox field named "menuItem" and a TextLine
-field named "menuName". This mixin must be added as x-data.
+field named "menuName". This mixin **must** be added as x-data.
+
+```xml
+<!-- Add this line after the end of the config node -->
+<x-data mixin="menu-item" />
+```
+
+Check the `_examples` folder for a few mixins you can just copy and paste into your site. Also read the readme-files in those folders for more information.
+
+### Thymeleaf
+
+We've included a bunch of examples of ready-to-go Thymeleaf code in the `_examples` folder, have a look there for a quick start. Also read the readme-files in those folders for more information.
 
 ## Compatibility
 
@@ -46,3 +57,4 @@ field named "menuName". This mixin must be added as x-data.
 | 1.0.0 | 6.0.0 |
 | 1.1.0 | 6.1.0 |
 | 1.1.1 | 6.1.0 |
+| 1.2.0 | 6.3.0 |
