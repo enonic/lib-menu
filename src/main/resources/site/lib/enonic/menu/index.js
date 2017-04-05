@@ -8,6 +8,82 @@ var globals = {
 };
 
 /**
+ * Returns the full breadcrumb menu path for the current content and site.
+ * @param {Object} params - A JSON object containing the (optional) settings for the function.
+ *   @param {Boolean} [params.linkActiveItem=false] - Wrap the active (current content) item with a link.
+ *   @param {Boolean} [params.showHomepage=true] - Disable return of item for the site homepage.
+ *   @param {String} [params.homepageTitle=null] - Customize (overwrite) the displayName of home/site link (if used). Common usage: "Home" or "Start".
+ *   @param {String} [params.dividerHtml=null] - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
+ * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
+ */
+ exports.getBreadcrumbMenu = function(params) {
+	var content = libs.portal.getContent();
+	var site = libs.portal.getSite();
+	var breadcrumbItems = []; // Stores each menu item
+	var breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
+
+	// Safely take care of all incoming settings and set defaults, for use in current scope only
+	var settings = {
+		linkActiveItem: params.linkActiveItem || false,
+		showHomepage: params.showHomepage || true,
+		homepageTitle: params.homepageTitle || null,
+		dividerHtml: params.dividerHtml || null
+	};
+
+	// Loop the entire path for current content based on the slashes. Generate one JSON item node for each item.
+	// If on frontpage, skip the path-loop
+	if (content._path != site._path) {
+		var fullPath = content._path;
+		var arrVars = fullPath.split("/");
+		var arrLength = arrVars.length;
+		for (var i = 1; i < arrLength-1; i++) { // Skip first item - the site - since it is handled separately.
+			var lastVar = arrVars.pop();
+			if (lastVar != '') {
+				var curItem = libs.content.get({ key: arrVars.join("/") + "/" + lastVar }); // Make sure item exists
+				if (curItem) {
+					var item = {};
+					var curItemUrl = libs.portal.pageUrl({
+						path: curItem._path,
+						type: 'absolute'
+					});
+					item.text = curItem.displayName;
+					if (content._path === curItem._path) { // Is current node active?
+						item.active = true;
+						if (settings.linkActiveItem) { // Respect setting for creating links for active item
+							item.url = curItemUrl;
+						}
+					} else {
+						item.active = false;
+						item.url = curItemUrl;
+					}
+					breadcrumbItems.push(item);
+				}
+			}
+		}
+	}
+
+	// Add Home button linking to site home, if wanted
+	if (settings.showHomepage) {
+		var homeUrl = libs.portal.pageUrl({
+			path: site._path,
+			type: 'absolute'
+		});
+		var item = {
+			text: settings.homepageTitle || site.displayName, // Fallback to site displayName if no custom name given
+			url: homeUrl,
+			active: (content._path === site._path)
+		};
+		breadcrumbItems.push(item);
+	}
+
+	// Add divider html (if any) and reverse the menu item array
+	breadcrumbMenu.divider = settings.dividerHtml || null;
+	breadcrumbMenu.items = breadcrumbItems.reverse();
+
+	return breadcrumbMenu;
+};
+
+/**
  * Get menu tree
  * @param {integer} levels - menu levels to get
  * @returns {Array}
