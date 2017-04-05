@@ -36,23 +36,23 @@ Normal use:
 ## Note about Thymeleaf examples
 
 Some classes are added to the wrapping `<li>` element to assist you with styling the menus using CSS. They are easy to change, but here's what they are used for:
-`has-children` - Used to indicate that there are sub menu items present (for displaying drop down icon or similar).
-`path` - Added if this is a parent menu item to the currently viewed page/content on your website.
+`has-children` - Used to indicate that there are sub menu items present (for displaying drop down icon or similar).  
+`path` - Added if this is a parent menu item to the currently viewed page/content on your website.  
 `active` - This is the currently viewed page/content on the website. It will not have "path" class.
 
 # Submenus
 
-When extracting submenus you won't be using `getMenuTree` but use `getSubMenus` instead (no need to change your Thymeleaf), here's an example:
+When extracting submenus you won't be using `getMenuTree` but use `getSubMenus` instead (no need to change your Thymeleaf). It also takes the level-parameter, but needs in addition to that the data for current content. Here's an example:
 
 ```javascript
 	var content = libs.portal.getContent(); // Get current content
-	var menuItems = libs.menu.getSubMenus(content,2); // Get submenu
+	var menuItems = libs.menu.getSubMenus(content,2); // Get submenu based on this content
 	var params = {
 		menuItems = menuItems
 	};
 
 	// Rendering time
-	var view = resolve("example-3level.html");
+	var view = resolve("example-2level.html");
 	var body = libs.thymeleaf.render(view, params);
 	return { body: body };
 ```
@@ -65,9 +65,9 @@ This functionality does not rely on the mixin data, but core data stored on each
 
 The settings for this function are all optional, just send in an empty object, `{}`, if you want to use the defaults. These are the available settings:
 
-**linkActiveItem** (default: false) - Wrap the active (current content) item with a link. If false, the entire a-tag will be skipped and not rendered. This is the best-practise way of doing breadcrumb menus.
-**showHomepage** (default: true) - Disable return of item for the site homepage, meaning the breadcrumb will never link back to the site content, only its children and grand children.
-**homepageTitle** (default: null) - Customize (overwrite) the displayName of home/site link (if used). Common usage: "Home" or "Start". If empty, the site content's displayName value will be used. Using this without setting `showHomepage` to true doesn't have any effect.
+**linkActiveItem** (default: false) - Wrap the active (current content) item with a link. If false, the entire a-tag will be skipped and not rendered. This is the best-practise way of doing breadcrumb menus.  
+**showHomepage** (default: true) - Disable return of item for the site homepage, meaning the breadcrumb will never link back to the site content, only its children and grand children.  
+**homepageTitle** (default: null) - Customize (overwrite) the displayName of home/site link (if used). Common usage: "Home" or "Start". If empty, the site content's displayName value will be used. Using this without setting `showHomepage` to true doesn't have any effect.  
 **dividerHtml** (default: null) - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
 
 # Example controller code
