@@ -35,7 +35,7 @@ Normal use:
 
 ## Note about Thymeleaf examples
 
-Some classes are added to the wrapping `<li>` element to assist you with styling the menus using CSS. They are easy to change, but here's what they are used for:
+Some classes are added to the wrapping `<li>` element to assist you with styling the menus using CSS. They are easy to change, but here's what they are used for:  
 `has-children` - Used to indicate that there are sub menu items present (for displaying drop down icon or similar).  
 `path` - Added if this is a parent menu item to the currently viewed page/content on your website.  
 `active` - This is the currently viewed page/content on the website. It will not have "path" class.
