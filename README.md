@@ -11,7 +11,7 @@ To "install" this library you need to update your build.gradle file in root. Add
 ```
 repositories {
     maven {
-        url 'http://repo.enonic.net/public'
+        url 'http://repo.enonic.com/public'
     }
 }
 
