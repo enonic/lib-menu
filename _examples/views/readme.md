@@ -24,7 +24,7 @@ Normal use:
 	// Get my menu
 	var menuItems = libs.menu.getMenuTree(2);
 	var params = {
-		menuItems = menuItems
+		menuItems: menuItems
 	};
 
 	// Rendering time
@@ -48,7 +48,7 @@ When extracting submenus you won't be using `getMenuTree` but use `getSubMenus` 
 	var content = libs.portal.getContent(); // Get current content
 	var menuItems = libs.menu.getSubMenus(content,2); // Get submenu based on this content
 	var params = {
-		menuItems = menuItems
+		menuItems: menuItems
 	};
 
 	// Rendering time
@@ -82,7 +82,7 @@ Here's an example use:
 		dividerHtml: '<span class="divider">/</span>'
 	});
 	var params = {
-		breadcrumbs = breadcrumbs
+		breadcrumbs: breadcrumbs
 	};
 
 	// Rendering time
