@@ -142,6 +142,9 @@ function isMenuItem(content) {
     if (!extraData) {
         return false;
     }
+	
+    globals.appPath = Object.keys(extraData);
+
     var extraDataModule = extraData[globals.appPath];
     if (!extraDataModule || !extraDataModule['menu-item']) {
         return false;
