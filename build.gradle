@@ -24,8 +24,8 @@ app {
 }
 
 dependencies {
-    include "com.enonic.xp:lib-content:${xpVersion}"
-    include "com.enonic.xp:lib-portal:${xpVersion}"
+    compile "com.enonic.xp:lib-content:${xpVersion}"
+    compile "com.enonic.xp:lib-portal:${xpVersion}"
 }
 
 repositories {
