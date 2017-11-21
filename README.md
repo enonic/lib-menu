@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    include 'com.enonic.lib:menu:1.3.0'
+    include 'com.enonic.lib:menu:1.3.1'
 }
 ```
 
@@ -60,6 +60,7 @@ We've included a bunch of examples of ready-to-go Thymeleaf code in the `_exampl
 
 | Lib version        | XP version |
 | ------------- | ------------- |
+| 1.3.1 | 6.3.0 |
 | 1.3.0 | 6.3.0 |
 | 1.2.0 | 6.3.0 |
 | 1.1.1 | 6.1.0 |
