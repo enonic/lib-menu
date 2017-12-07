@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+  <display-name>Menu settings</display-name>
+  <items>
+    <input type="Checkbox" name="menuItem">
+      <label>Show in menu?</label>
+      <help-text>Check this to include this content in the menu.</help-text>
+      <occurrences minimum="0" maximum="1"/>
+    </input>
+    <input type="TextLine" name="menuName">
+      <label>Override menu name</label>
+      <help-text>Name to be used in menu, default is to use the content's DisplayName.</help-text>
+      <occurrences minimum="0" maximum="1"/>
+    </input>
+  </items>
+</mixin>
