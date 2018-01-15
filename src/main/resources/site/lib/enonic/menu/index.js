@@ -1,10 +1,11 @@
 var libs = {
     portal: require('/lib/xp/portal'),
-    content: require('/lib/xp/content')
+    content: require('/lib/xp/content'),
+    util: require('/lib/enonic/util')
 };
 
 var globals = {
-	appPath: app.name.replace(/\./g, '-')
+	appPath: libs.util.app.getJsonName()
 };
 
 /**
@@ -14,6 +15,7 @@ var globals = {
  *   @param {Boolean} [params.showHomepage=true] - Disable return of item for the site homepage.
  *   @param {String} [params.homepageTitle=null] - Customize (overwrite) the displayName of home/site link (if used). Common usage: "Home" or "Start".
  *   @param {String} [params.dividerHtml=null] - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
+ *   @param {String} [params.urlType=null] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
  exports.getBreadcrumbMenu = function(params) {
@@ -27,8 +29,19 @@ var globals = {
 		linkActiveItem: params.linkActiveItem || false,
 		showHomepage: params.showHomepage || true,
 		homepageTitle: params.homepageTitle || null,
-		dividerHtml: params.dividerHtml || null
+		dividerHtml: params.dividerHtml || null,
+		urlType: params.urlType || null
 	};
+
+	// We only allow 'server' or 'absolute' options for URL type.
+	if (settings.urlType) {
+		switch (settings.urlType) {
+			case 'absolute':
+				break; // Pass through
+			default:
+				settings.urlType = 'server';
+		}
+	}
 
 	// Loop the entire path for current content based on the slashes. Generate one JSON item node for each item.
 	// If on frontpage, skip the path-loop
@@ -44,7 +57,7 @@ var globals = {
 					var item = {};
 					var curItemUrl = libs.portal.pageUrl({
 						path: curItem._path,
-						type: 'absolute'
+						type: settings.urlType
 					});
 					item.text = curItem.displayName;
 					if (content._path === curItem._path) { // Is current node active?
@@ -56,6 +69,7 @@ var globals = {
 						item.active = false;
 						item.url = curItemUrl;
 					}
+					item.type = content.type;
 					breadcrumbItems.push(item);
 				}
 			}
@@ -66,12 +80,13 @@ var globals = {
 	if (settings.showHomepage) {
 		var homeUrl = libs.portal.pageUrl({
 			path: site._path,
-			type: 'absolute'
+			type: settings.urlType
 		});
 		var item = {
 			text: settings.homepageTitle || site.displayName, // Fallback to site displayName if no custom name given
 			url: homeUrl,
-			active: (content._path === site._path)
+			active: (content._path === site._path),
+			type: site.type
 		};
 		breadcrumbItems.push(item);
 	}
@@ -91,7 +106,7 @@ var globals = {
 exports.getMenuTree = function(levels) {
     var menu = [];
     var site = libs.portal.getSite();
-    levels = (isInt(levels) ? levels : 1);
+    levels = (libs.util.value.isInt(levels) ? levels : 1);
 
     if (site) {
         menu = exports.getSubMenus(site, levels);
@@ -194,15 +209,4 @@ function menuItemToJson(content, levels) {
         type: content.type,
         children: subMenus
     };
-}
-
-/**
- * Check if value is integer
- * @param value
- * @returns {boolean}
- */
-function isInt(value) {
-    return !isNaN(value) &&
-           parseInt(Number(value)) == value &&
-           !isNaN(parseInt(value, 10));
 }
