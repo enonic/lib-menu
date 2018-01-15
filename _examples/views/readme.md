@@ -1,10 +1,10 @@
-# View help
+# View (and controller) help
 
-For your convenience we've added a few example views for rendering a fully semantic menus in HTML5 that you can use on your website. Just add your own styling via CSS.
+For your convenience we've added a few example views for rendering fully semantic menues in HTML5 that you can use on your website. Just add your own styling via CSS.
 
 ## Installation:
 
-* *First: Add one of the mixins!*
+* *First: Install the lib and optionally add one of the mixins*
 * Setup your **view** by copying the code from one of the HTML files in this folder.
 * Setup your **controller** by copying from the JavaScript examples in this document.
 
@@ -18,13 +18,13 @@ Creating menus for navigating your site? Then look no further. With the code in 
 
 Make sure your controller uses `libs.menu.getMenuTree(x)` and sends this into the view as a parameter called `menuItems`, see general installation guide in the root `README.md` file for more info. Now you are done. Edit some content in your Enonic XP Admin interface and choose to display them in the menu. Voíla!
 
-Normal use:
+Example basic use:
 
 ```javascript
-	// Get my menu
+	// Get my menu (based on content having the "Show in menu" checked).
 	var menuItems = libs.menu.getMenuTree(2);
 	var params = {
-		menuItems: menuItems
+		menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
 	};
 
 	// Rendering time
@@ -45,10 +45,10 @@ Some classes are added to the wrapping `<li>` element to assist you with styling
 When extracting submenus you won't be using `getMenuTree` but use `getSubMenus` instead (no need to change your Thymeleaf). It also takes the level-parameter, but needs in addition to that the data for current content. Here's an example:
 
 ```javascript
-	var content = libs.portal.getContent(); // Get current content
-	var menuItems = libs.menu.getSubMenus(content,2); // Get submenu based on this content
+	var content = libs.portal.getContent(); // Get current content (want a menu from another area of your site? Fetch the content data for that item instead!)
+	var menuItems = libs.menu.getSubMenus(content,2); // Get submenu based on the content
 	var params = {
-		menuItems: menuItems
+		menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
 	};
 
 	// Rendering time
@@ -83,7 +83,7 @@ Here's an example use:
 		dividerHtml: '<span class="divider">/</span>'
 	});
 	var params = {
-		breadcrumbs: breadcrumbs
+		breadcrumbs: breadcrumbs // The name of the variable you send in here - breadcrumbs - is expected by Thymeleaf.
 	};
 
 	// Rendering time
