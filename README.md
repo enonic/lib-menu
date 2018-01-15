@@ -64,11 +64,18 @@ After this, any content type with this mixin will now get the fields/settings fo
 <x-data mixin="menu-item" />
 ```
 
-Check the `_examples` folder for a few mixins you can just copy and paste into your site. Also read the readme-files in those folders for more information. A mentioned previously, manually adding a mixin to your app with the same name (`mixins/menu-item/menu-item.xml`) will overwrite this library's included mixin.
+Check the `/_examples` folder for a few mixins you can just copy and paste into your site. Also read the readme-files in those folders for more information. A mentioned previously, manually adding a mixin to your app with the same name (`mixins/menu-item/menu-item.xml`) will overwrite this library's included mixin.
 
 ### Thymeleaf
 
-We've included a bunch of examples of ready-to-go Thymeleaf code in the `_examples` folder, have a look there for a quick start. Also read the readme-files in those folders for more information.
+We've included Thymeleaf fragments you can use for the different types of menues we have. They can be used like this after version `1.4.0` of this lib is installed.
+
+```html
+<div data-th-replace="/site/views/fragments/menu :: main-menu"></div>
+<div data-th-replace="/site/views/fragments/breadcrumb :: breadcrumb"></div>
+```
+
+We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_examples` folder, have a look there if you need to build something custom. Also read the readme-files in those folders for more information.
 
 ## Compatibility
 
