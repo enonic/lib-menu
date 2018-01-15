@@ -69,6 +69,7 @@ The settings for this function are all optional, just send in an empty object, `
 **showHomepage** (default: true) - Disable return of item for the site homepage, meaning the breadcrumb will never link back to the site content, only its children and grand children.  
 **homepageTitle** (default: null) - Customize (overwrite) the displayName of home/site link (if used). Common usage: "Home" or "Start". If empty, the site content's displayName value will be used. Using this without setting `showHomepage` to true doesn't have any effect.  
 **dividerHtml** (default: null) - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
+**urlType** (default: 'server') - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'. Read more in the docs for portal.pageUrl().
 
 # Example controller code
 
