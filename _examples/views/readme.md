@@ -92,6 +92,35 @@ Here's an example use:
 	return { body: body };
 ```
 
+The return look something like this:
+
+```JSON
+{
+    "divider": "<span class=\"divider\">/</span>",
+    "items": [
+        {
+            "text": "Home",
+            "url": "https://www.example.com",
+            "active": false
+        },
+        {
+            "text": "Norwegian",
+            "active": false,
+            "url": "http://www.example.com/no"
+        },
+        {
+            "text": "Subpage",
+            "active": false,
+            "url": "http://www.example.com/no/sub-page"
+        },
+        {
+            "text": "Current page",
+            "active": true
+        }
+    ]
+}
+```
+
 ## Note about Thymeleaf example
 
 Check the file `example-breadcrumbs.html` for an idea of how you can use this data. It contains a few comments that you can remove later. The class names and elements are just a suggestion.
