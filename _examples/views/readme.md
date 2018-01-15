@@ -25,16 +25,16 @@ Make sure your controller uses `libs.menu.getMenuTree(x)` and sends this into th
 Example basic use:
 
 ```javascript
-	// Get my menu (based on content having the "Show in menu" checked).
-	var menuItems = libs.menu.getMenuTree(2);
-	var params = {
-		menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
-	};
+// Get my menu (based on content having the "Show in menu" checked).
+var menuItems = libs.menu.getMenuTree(2);
+var params = {
+	menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
+};
 
-	// Rendering time
-	var view = resolve("example-3level.html");
-	var body = libs.thymeleaf.render(view, params);
-	return { body: body };
+// Rendering time
+var view = resolve("example-3level.html");
+var body = libs.thymeleaf.render(view, params);
+return { body: body };
 ```
 
 ## Thymeleaf
@@ -69,16 +69,16 @@ Classes are added to the wrapping `<li>`-element to assist you with styling the 
 When extracting submenus you won't be using `getMenuTree` but use `getSubMenus` instead (no need to change your Thymeleaf). It also takes the level-parameter, but needs in addition to that the data for current content. Here's an example:
 
 ```javascript
-	var content = libs.portal.getContent(); // Get current content (want a menu from another area of your site? Fetch the content data for that item instead!)
-	var menuItems = libs.menu.getSubMenus(content,2); // Get submenu based on the content
-	var params = {
-		menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
-	};
+var content = libs.portal.getContent(); // Get current content (want a menu from another area of your site? Fetch the content data for that item instead!)
+var menuItems = libs.menu.getSubMenus(content,2); // Get submenu based on the content
+var params = {
+	menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
+};
 
-	// Rendering time
-	var view = resolve("example-2level.html");
-	var body = libs.thymeleaf.render(view, params);
-	return { body: body };
+// Rendering time
+var view = resolve("example-2level.html");
+var body = libs.thymeleaf.render(view, params);
+return { body: body };
 ```
 
 # Breadcrumb menus
@@ -100,25 +100,25 @@ The settings for this function are all optional, just send in an empty object, `
 Here's an example use:
 
 ```javascript
-	var breadcrumbs = libs.menu.getBreadcrumbMenu({
-		linkActiveItem: false,
-		showHomepage: true,
-		homepageTitle: 'Home',
-		dividerHtml: '<span class="divider">/</span>'
-	});
-	var params = {
-		breadcrumbs: breadcrumbs // The name of the variable you send in here - breadcrumbs - is expected by Thymeleaf.
-	};
+var breadcrumbs = libs.menu.getBreadcrumbMenu({
+	linkActiveItem: false,
+	showHomepage: true,
+	homepageTitle: 'Home',
+	dividerHtml: '<span class="divider">/</span>'
+});
+var params = {
+	breadcrumbs: breadcrumbs // The name of the variable you send in here - breadcrumbs - is expected by Thymeleaf.
+};
 
-	// Rendering time
-	var view = resolve("example-breadcrumbs.html");
-	var body = libs.thymeleaf.render(view, params);
-	return { body: body };
+// Rendering time
+var view = resolve("example-breadcrumbs.html");
+var body = libs.thymeleaf.render(view, params);
+return { body: body };
 ```
 
 The return look something like this:
 
-```JSON
+```javascript
 {
     "divider": "<span class=\"divider\">/</span>",
     "items": [
@@ -126,24 +126,24 @@ The return look something like this:
             "text": "Home",
             "url": "https://www.example.com",
             "active": false,
-				"type": "portal:site"
+            "type": "portal:site"
         },
         {
             "text": "Norwegian",
             "active": false,
             "url": "http://www.example.com/no",
-				"type": "com.enonic.xp:landing-page"
+            "type": "com.enonic.xp:landing-page"
         },
         {
             "text": "Subpage",
             "active": false,
             "url": "http://www.example.com/no/sub-page",
-				"type": "com.enonic.xp:landing-page"
+            "type": "com.enonic.xp:landing-page"
         },
         {
             "text": "Current page",
             "active": true,
-				"type": "com.enonic.xp:article"
+            "type": "com.enonic.xp:article"
         }
     ]
 }
