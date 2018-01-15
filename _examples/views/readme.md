@@ -28,7 +28,7 @@ Example basic use:
 // Get my menu (based on content having the "Show in menu" checked).
 var menuItems = libs.menu.getMenuTree(2);
 var params = {
-	menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
+    menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
 };
 
 // Rendering time
@@ -72,7 +72,7 @@ When extracting submenus you won't be using `getMenuTree` but use `getSubMenus` 
 var content = libs.portal.getContent(); // Get current content (want a menu from another area of your site? Fetch the content data for that item instead!)
 var menuItems = libs.menu.getSubMenus(content,2); // Get submenu based on the content
 var params = {
-	menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
+    menuItems: menuItems // The name of the variable you send in here - menuItems - is expected by Thymeleaf.
 };
 
 // Rendering time
@@ -101,13 +101,13 @@ Here's an example use:
 
 ```javascript
 var breadcrumbs = libs.menu.getBreadcrumbMenu({
-	linkActiveItem: false,
-	showHomepage: true,
-	homepageTitle: 'Home',
-	dividerHtml: '<span class="divider">/</span>'
+    linkActiveItem: false,
+    showHomepage: true,
+    homepageTitle: 'Home',
+    dividerHtml: '<span class="divider">/</span>'
 });
 var params = {
-	breadcrumbs: breadcrumbs // The name of the variable you send in here - breadcrumbs - is expected by Thymeleaf.
+    breadcrumbs: breadcrumbs // The name of the variable you send in here - breadcrumbs - is expected by Thymeleaf.
 };
 
 // Rendering time
