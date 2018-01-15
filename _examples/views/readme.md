@@ -10,11 +10,15 @@ For your convenience we've added a few example views for rendering fully semanti
 
 Keep reading for detailed instructions.
 
+## Custom view Thymeleaf, or use our fragments!
+
+From version `1.4.0` of this library, we ship a few Thymeleaf fragments together with the code. These can easily be called on from your code. Read the instructions further down for details.
+
 # Site menus
 
 Creating menus for navigating your site? Then look no further. With the code in place, just edit some content in your Enonic XP Admin interface and choose to display them in the menu. Voíla!
 
-## Example controller code
+## Controller
 
 Make sure your controller uses `libs.menu.getMenuTree(x)` and sends this into the view as a parameter called `menuItems`, see general installation guide in the root `README.md` file for more info. Now you are done. Edit some content in your Enonic XP Admin interface and choose to display them in the menu. Voíla!
 
@@ -33,9 +37,29 @@ Example basic use:
 	return { body: body };
 ```
 
-## Note about Thymeleaf examples
+## Thymeleaf
 
-Some classes are added to the wrapping `<li>` element to assist you with styling the menus using CSS. They are easy to change, but here's what they are used for:  
+Use the included fragment as so:
+
+```html
+		<div data-th-replace="/site/views/fragments/menu::main-menu"></div>
+```
+
+This will generate the `/_examples/views/example-4level.html` code that can output up to four levels of nested menues. It will perfectly handle if less levels than that are present, however, it will basically just skip levels 5 and further. For that you need to go for a custom view and expand the Thymeleaf code.
+
+If the data where your menu is stored is not available in the root variable `menuItems` in your Thymeleaf you can change the name of it when calling the fragment, like so:
+
+```html
+		<div data-th-replace="/site/views/fragments/menu::main-menu(menuItems=${menu.children})"></div>
+```
+
+What was stored in `menu.children` will here be sent into the fragment as `menuItems` instead (the expected property name).
+
+## Note about our Thymeleaf
+
+If you like to build your own Thymeleaf code, take a look at the examples. These, and our bundled fragment, uses these class conventions:
+
+Classes are added to the wrapping `<li>`-element to assist you with styling the menus using CSS. Here's what they are used for:  
 `has-children` - Used to indicate that there are sub menu items present (for displaying drop down icon or similar).  
 `path` - Added if this is a parent menu item to the currently viewed page/content on your website.  
 `active` - This is the currently viewed page/content on the website. It will not have "path" class.
@@ -71,7 +95,7 @@ The settings for this function are all optional, just send in an empty object, `
 **dividerHtml** (default: null) - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
 **urlType** (default: 'server') - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'. Read more in the docs for portal.pageUrl().
 
-# Example controller code
+# Controller
 
 Here's an example use:
 
@@ -125,6 +149,22 @@ The return look something like this:
 }
 ```
 
+## Thymeleaf
+
+Use our included Thymeleaf fragment like so:
+
+```html
+	<div data-th-replace="/site/views/fragments/breadcrumb :: breadcrumb"></div>
+```
+
+If the data where your menu is stored is not available in the root variable `breadcrumbs` in your Thymeleaf you can change the name of it when calling the fragment, like so:
+
+```html
+		<div data-th-replace="/site/views/fragments/breadcrumb :: breadcrumb(breadcrumbs=${content.data.menus})"></div>
+```
+
+What was stored in `content.data.menus` will here be sent into the fragment as `breadcrumbs` instead (the expected property name).
+
 ## Note about Thymeleaf example
 
-Check the file `example-breadcrumbs.html` for an idea of how you can use this data. It contains a few comments that you can remove later. The class names and elements are just a suggestion.
+Check the file `example-breadcrumbs.html` for an idea of how you can create your own custom Thymeleaf code for a menu like this. It contains a few comments that you can remove later. The class names and elements are just suggestions.
