@@ -30,9 +30,9 @@ dependencies {
 
 **Note:** The continuous build-command, `gradle build|deploy -t`, won't detect changes to `build.gradle` file. Make sure you "restart" the build/deploy command.
 
-## Usages
+## Usage
 
-Using lib-menu demands adding code to your app:
+Using lib-menu demands adding some code to your app:
 
 1. Storage: Use our included **Mixin** or overwrite with your own.
 2. Javascript: Use the functions in your **Controller**.
@@ -54,7 +54,7 @@ After this, any content type with this mixin will now get the fields/settings fo
 
 Check the `/_examples` folder for a few mixins you can just copy and paste into your site. Also read the readme-files in those folders for more information. A mentioned previously, manually adding a mixin to your app with the same name (`mixins/menu-item/menu-item.xml`) will overwrite this library's included mixin.
 
-### Controllers
+### Controller
 
 In every controller you want to use it (Page, Part or Layout) you just `require` the `/lib/enonic/menu` library, like so:
 
