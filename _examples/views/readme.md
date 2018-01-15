@@ -101,21 +101,25 @@ The return look something like this:
         {
             "text": "Home",
             "url": "https://www.example.com",
-            "active": false
+            "active": false,
+				"type": "portal:site"
         },
         {
             "text": "Norwegian",
             "active": false,
-            "url": "http://www.example.com/no"
+            "url": "http://www.example.com/no",
+				"type": "com.enonic.xp:landing-page"
         },
         {
             "text": "Subpage",
             "active": false,
-            "url": "http://www.example.com/no/sub-page"
+            "url": "http://www.example.com/no/sub-page",
+				"type": "com.enonic.xp:landing-page"
         },
         {
             "text": "Current page",
-            "active": true
+            "active": true,
+				"type": "com.enonic.xp:article"
         }
     ]
 }
