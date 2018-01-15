@@ -34,9 +34,9 @@ dependencies {
 
 Using lib-menu demands adding code to your app:
 
-1. Storage: Use our included *mixin* or overwrite with your own.
-2. Javascript: Use the functions in your *Controller*.
-3. HTML: Use our included *Thymeleaf* fragments, or write your own.
+1. Storage: Use our included **Mixin** or overwrite with your own.
+2. Javascript: Use the functions in your **Controller**.
+3. HTML: Use our included **Thymeleaf** fragments, or write your own.
 
 ### Mixin
 
@@ -83,7 +83,7 @@ We've included Thymeleaf fragments you can use for the different types of menues
 <div data-th-replace="/site/views/fragments/breadcrumb :: breadcrumb"></div>
 ```
 
-We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_examples` folder, have a look there if you need to build something custom. Also read the readme-files in those folders for more information.
+We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_examples/views/` folder, have a look there if you need to build something custom. Also read the readme-files in those folders for more information.
 
 ## Compatibility
 
