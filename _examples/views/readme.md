@@ -42,7 +42,7 @@ return { body: body };
 Use the included fragment as so:
 
 ```html
-<div data-th-replace="/site/views/fragments/menu::main-menu"></div>
+<div data-th-replace="/site/views/fragments/enonic-lib-menu/menu::main-menu"></div>
 ```
 
 This will generate the `/_examples/views/example-4level.html` code that can output up to four levels of nested menues. It will perfectly handle if less levels than that are present, however, it will basically just skip levels 5 and further. For that you need to go for a custom view and expand the Thymeleaf code.
@@ -50,7 +50,7 @@ This will generate the `/_examples/views/example-4level.html` code that can outp
 If the data where your menu is stored is not available in the root variable `menuItems` in your Thymeleaf you can change the name of it when calling the fragment, like so:
 
 ```html
-<div data-th-replace="/site/views/fragments/menu::main-menu(menuItems=${menu.children})"></div>
+<div data-th-replace="/site/views/fragments/enonic-lib-menu/menu::main-menu(menuItems=${menu.children})"></div>
 ```
 
 What was stored in `menu.children` will here be sent into the fragment as `menuItems` instead (the expected property name).
@@ -154,13 +154,13 @@ The return look something like this:
 Use our included Thymeleaf fragment like so:
 
 ```html
-<div data-th-replace="/site/views/fragments/breadcrumb :: breadcrumb"></div>
+<div data-th-replace="/site/views/fragments/enonic-lib-menu/breadcrumb :: breadcrumb"></div>
 ```
 
 If the data where your menu is stored is not available in the root variable `breadcrumbs` in your Thymeleaf you can change the name of it when calling the fragment, like so:
 
 ```html
-<div data-th-replace="/site/views/fragments/breadcrumb :: breadcrumb(breadcrumbs=${content.data.menus})"></div>
+<div data-th-replace="/site/views/fragments/enonic-lib-menu/breadcrumb :: breadcrumb(breadcrumbs=${content.data.menus})"></div>
 ```
 
 What was stored in `content.data.menus` will here be sent into the fragment as `breadcrumbs` instead (the expected property name).

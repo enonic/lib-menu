@@ -79,8 +79,8 @@ var subMenuItems = libs.menu.getSubMenus(content,1); // Get 1 level of submenu (
 We've included Thymeleaf fragments you can use for the different types of menues we have. They can be used like this after version `1.4.0` of this lib is installed.
 
 ```html
-<div data-th-replace="/site/views/fragments/menu :: main-menu"></div>
-<div data-th-replace="/site/views/fragments/breadcrumb :: breadcrumb"></div>
+<div data-th-replace="/site/views/fragments/enonic-lib-menu/menu :: main-menu"></div>
+<div data-th-replace="/site/views/fragments/enonic-lib-menu/breadcrumb :: breadcrumb"></div>
 ```
 
 We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_examples/views/` folder, have a look there if you need to build something custom. Also read the readme-files in those folders for more information.
