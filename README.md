@@ -4,13 +4,13 @@ This library will assist you with creating different kind of menus in XP. It hel
 
 ## Installation
 
-To install this library you need to update your `build.gradle` file in root. Add the new dependency (after other dependencies) and make sure the Enonic repository URL is set up for maven.
+To install this library you need to update your app's `build.gradle` file.
 
 ### Gradle 3+
 
 ```
-plugins {
-    id 'com.enonic.lib:menu' version '2.0.0'
+dependencies {
+    include 'com.enonic.lib:menu:2.0.0'
 }
 ```
 
