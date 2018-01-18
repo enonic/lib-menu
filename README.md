@@ -61,7 +61,7 @@ In every controller you want to use it (Page, Part or Layout) you just `require`
 ```javascript
 var libs = {
 	menu: require('/lib/enonic/menu')
-}
+};
 ```
 
 To access any of the functions from this library, just type something like this:
