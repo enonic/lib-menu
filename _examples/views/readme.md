@@ -12,7 +12,7 @@ Keep reading for detailed instructions.
 
 ## Custom view Thymeleaf, or use our fragments!
 
-From version `1.4.0` of this library, we ship a few Thymeleaf fragments together with the code. These can easily be called on from your code. Read the instructions further down for details.
+From version `2.0.0` of this library, we ship a few Thymeleaf fragments together with the code. These can easily be called on from your code. Read the instructions further down for details.
 
 # Site menus
 

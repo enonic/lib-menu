@@ -10,7 +10,7 @@ To install this library you need to update your `build.gradle` file in root. Add
 
 ```
 plugins {
-    id 'com.enonic.lib:menu' version '1.4.0'
+    id 'com.enonic.lib:menu' version '2.0.0'
 }
 ```
 
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    include 'com.enonic.lib:menu:1.4.0'
+    include 'com.enonic.lib:menu:2.0.0'
 }
 ```
 
@@ -76,7 +76,7 @@ var subMenuItems = libs.menu.getSubMenus(content,1); // Get 1 level of submenu (
 
 ### Thymeleaf
 
-We've included Thymeleaf fragments you can use for the different types of menues we have. They can be used like this after version `1.4.0` of this lib is installed.
+We've included Thymeleaf fragments you can use for the different types of menues we have. They can be used like this after version `2.0.0` of this lib is installed.
 
 ```html
 <div data-th-replace="/site/views/fragments/enonic-lib-menu/menu :: main-menu"></div>
@@ -89,7 +89,7 @@ We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_e
 
 | Lib version        | XP version |
 | ------------- | ------------- |
-| 1.4.0 | 6.12.0 |
+| 2.0.0 | 6.13.1 |
 | 1.3.3 | 6.3.0 |
 | 1.3.2 | 6.3.0 |
 | 1.3.1 | 6.3.0 |
