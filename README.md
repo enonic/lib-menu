@@ -60,16 +60,17 @@ In every controller you want to use it (Page, Part or Layout) you just `require`
 
 ```javascript
 var libs = {
-	menu: require('/lib/enonic/menu')
+    menu: require('/lib/enonic/menu')
 };
 ```
 
 To access any of the functions from this library, just type something like this:
 
 ```javascript
-var menuItems = libs.menu.getMenuTree(2); // Get 2 levels of menu
-var breadcrumbItems = libs.menu.getBreadcrumbMenu({}); // Get a breadcrumb menu
+var menuItems = libs.menu.getMenuTree(2); // Get 2 levels of menu based on content setting 'Show in menu'.
+var breadcrumbItems = libs.menu.getBreadcrumbMenu({}); // Get a breadcrumb menu for current content.
 
+// To be more flexible, subMenuItems require a content to be sent in.
 var content = libs.portal.getContent();
 var subMenuItems = libs.menu.getSubMenus(content,1); // Get 1 level of submenu (from current content)
 ```
