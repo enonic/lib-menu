@@ -19,8 +19,9 @@ var globals = {
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
 exports.getBreadcrumbMenu = function (params) {
-    var content = libs.portal.getContent();
     var site = libs.portal.getSite();
+    var content = libs.portal.getContent() || site; // Fallback to site if there's no content (like in errorHandlers).
+
     var breadcrumbItems = []; // Stores each menu item
     var breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
 
@@ -127,7 +128,7 @@ exports.getSubMenus = function (parentContent, levels) {
 
 var doGetSubMenus = function (parentContent, levels) {
     var subMenus = [];
-    var currentContent = libs.portal.getContent();
+    var currentContent = libs.portal.getContent() || parentContent; // Fallback to currentContent if there's no content (like in errorHandlers).;
 
     if (parentContent.type === 'portal:site' && isMenuItem(parentContent)) {
         subMenus.push(renderMenuItem(currentContent, parentContent, 0));
