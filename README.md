@@ -10,7 +10,7 @@ To install this library you need to update your app's `build.gradle` file.
 
 ```
 dependencies {
-    include 'com.enonic.lib:menu:2.0.0'
+    include 'com.enonic.lib:menu:2.0.1'
 }
 ```
 
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    include 'com.enonic.lib:menu:2.0.0'
+    include 'com.enonic.lib:menu:2.0.1'
 }
 ```
 
@@ -90,7 +90,7 @@ We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_e
 
 | Lib version        | XP version |
 | ------------- | ------------- |
-| 2.0.0 | 6.13.1 |
+| 2.0.0+ | 6.13.1 |
 | 1.3.3 | 6.3.0 |
 | 1.3.2 | 6.3.0 |
 | 1.3.1 | 6.3.0 |
