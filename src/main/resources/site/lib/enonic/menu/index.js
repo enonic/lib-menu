@@ -150,8 +150,10 @@ var doGetSubMenus = function (parentContent, levels) {
 };
 
 var getChildMenuItems = function (parent) {
+
     return libs.content.query({
         count: 1000,
+        sort: parent.childOrder,
         filters: {
             boolean: {
                 must: [
