@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mixin>
+<x-data>
   <display-name>Menu settings</display-name>
-  <items>
+  <form>
     <input type="Checkbox" name="menuItem">
       <label>Show in menu?</label>
       <help-text>Check this to include this content in the menu.</help-text>
@@ -12,5 +12,5 @@
       <help-text>Name to be used in menu, default is to use the content's DisplayName.</help-text>
       <occurrences minimum="0" maximum="1"/>
     </input>
-  </items>
-</mixin>
+  </form>
+</x-data>
