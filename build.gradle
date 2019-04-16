@@ -7,7 +7,7 @@ plugins {
 dependencies {
 	compile "com.enonic.xp:lib-content:${xpVersion}"
 	compile "com.enonic.xp:lib-portal:${xpVersion}"
-	compile 'com.enonic.lib:lib-util:2.0.0-B2'
+	compile 'com.enonic.lib:lib-util:2.0.0-RC1'
 }
 
 repositories {
