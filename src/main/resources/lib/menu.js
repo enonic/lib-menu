@@ -1,7 +1,7 @@
 var libs = {
     portal: require('/lib/xp/portal'),
     content: require('/lib/xp/content'),
-    util: require('/lib/enonic/util')
+    util: require('/lib/util')
 };
 
 var globals = {

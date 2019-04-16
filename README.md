@@ -4,27 +4,13 @@ This library will assist you with creating different kind of menus in XP. It hel
 
 ## Installation
 
-To install this library you need to update your app's `build.gradle` file.
+To install this library you need to add a new dependency to your app's `build.gradle` file.
 
-### Gradle 3+
+### Gradle
 
 ```
 dependencies {
-    include 'com.enonic.lib:menu:2.0.1'
-}
-```
-
-### Gradle - old
-
-```
-repositories {
-    maven {
-        url 'http://repo.enonic.com/public'
-    }
-}
-
-dependencies {
-    include 'com.enonic.lib:menu:2.0.1'
+    include 'com.enonic.lib:lib-menu:3.0.0'
 }
 ```
 
@@ -40,7 +26,7 @@ Using lib-menu demands adding some code to your app:
 
 ### Mixin
 
-We include a mixin called `menu-item` with this library. It's available to your app when installing this library  (meaning you can add the `<x-data>` tag to your site.xml without adding a mixin manually first - new in `1.3.3`). Overwriting it is very easy, just place a mixin with the same name in your app and that will be used instead.
+We include a mixin called `menu-item` with this library. It's available to your app when installing this library  (meaning you can add the `<mixin>` tag to your site.xml without adding a mixin manually first - new in `1.3.3`). Overwriting it is very easy, just place a mixin with the same name in your app and that will be used instead.
 
 It is important that you manually update your own app's `site.xml` adding this mixin (ours or your own) referencing this [mixin as a x-data one](http://docs.enonic.com/en/stable/developer/schema/mixins.html#using-a-mixin) (not inline!). You can also optionally add this mixin to only specific content types, still as x-data.
 
@@ -49,7 +35,7 @@ After this, any content type with this mixin will now get the fields/settings fo
 ```xml
 <!-- Add this line after the end of the config node in site.xml -->
 <!-- Or the same line inside the config node of any content type descriptor file -->
-<x-data mixin="menu-item" />
+<mixin name="menu-item" />
 ```
 
 Check the `/_examples` folder for a few mixins you can just copy and paste into your site. Also read the readme-files in those folders for more information. A mentioned previously, manually adding a mixin to your app with the same name (`mixins/menu-item/menu-item.xml`) will overwrite this library's included mixin.
