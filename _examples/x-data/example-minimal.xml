@@ -3,13 +3,13 @@
 	DESCRIPTION:
 	Just the bare minimum mixin to get menues working on your website.
 -->
-<mixin>
+<x-data>
   <display-name>Menu settings</display-name>
-  <items>
+  <form>
     <input type="Checkbox" name="menuItem">
       <label>Show in menu?</label>
       <help-text>Check this to include this content in the menu.</help-text>
       <occurrences minimum="0" maximum="1"/>
     </input>
-  </items>
-</mixin>
+  </form>
+</x-data>
