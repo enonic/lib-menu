@@ -3,9 +3,9 @@
 	DESCRIPTION:
 	The default settings we find most useful (and not bloated) for menues on most websites. This is the recommended mixin (also included by default with the lib itself, no need to manually install this unless you want to configure something).
 -->
-<mixin>
+<x-data>
   <display-name>Menu settings</display-name>
-  <items>
+  <form>
     <input type="Checkbox" name="menuItem">
       <label>Show in menu?</label>
       <help-text>Check this to include this content in the menu.</help-text>
@@ -16,5 +16,5 @@
       <help-text>Name to be used in menu, default is to use the content's DisplayName.</help-text>
       <occurrences minimum="0" maximum="1"/>
     </input>
-  </items>
-</mixin>
+  </form>
+</x-data>

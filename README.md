@@ -1,6 +1,8 @@
 # Menu lib
 
-This library will assist you with creating different kind of menus in XP. It helps you with the server side and client side code. However, the client side code is optional and can be adjusted to your needs.
+This library will assist you with creating different kind of menus in XP. 
+It helps you with the server side and client side code. 
+However, the client side code is optional and can be adjusted to your needs.
 
 ## Installation
 
@@ -20,25 +22,28 @@ dependencies {
 
 Using lib-menu demands adding some code to your app:
 
-1. Storage: Use our included **Mixin** or overwrite with your own.
+1. Storage: Use our included **X-data** or overwrite with your own.
 2. Javascript: Use the functions in your **Controller**.
 3. HTML: Use our included **Thymeleaf** fragments, or write your own.
 
-### Mixin
+### X-data
 
-We include a mixin called `menu-item` with this library. It's available to your app when installing this library  (meaning you can add the `<mixin>` tag to your site.xml without adding a mixin manually first - new in `1.3.3`). Overwriting it is very easy, just place a mixin with the same name in your app and that will be used instead.
+We include an x-data called `menu-item` with this library. 
+It will be enabled in your app after adding a dependency to this library 
+(meaning you can add the `<x-data>` tag to your site.xml without having the x-data scheme in your app). Overwriting it is very easy, just place an x-data with the same name in your app and that will be used instead.
 
-It is important that you manually update your own app's `site.xml` adding this mixin (ours or your own) referencing this [mixin as a x-data one](http://docs.enonic.com/en/stable/developer/schema/mixins.html#using-a-mixin) (not inline!). You can also optionally add this mixin to only specific content types, still as x-data.
+It is important that you manually update your own app's `site.xml` adding this x-data (ours or your own) referencing this [x-data](https://developer.enonic.com/docs/xp/stable/cms/x-data). 
+You can also optionally add this x-data to specific content types.
 
-After this, any content type with this mixin will now get the fields/settings for menu control.
+After this, any content type with this x-data will now get the fields/settings for menu control.
 
 ```xml
-<!-- Add this line after the end of the config node in site.xml -->
-<!-- Or the same line inside the config node of any content type descriptor file -->
-<mixin name="menu-item" />
+<!-- Add this line to your site.xml -->
+<!-- or inside any content type descriptor -->
+<x-data name="menu-item" />
 ```
 
-Check the `/_examples` folder for a few mixins you can just copy and paste into your site. Also read the readme-files in those folders for more information. A mentioned previously, manually adding a mixin to your app with the same name (`mixins/menu-item/menu-item.xml`) will overwrite this library's included mixin.
+Check the `/_examples` folder for a few x-datas you can just copy and paste into your site. Also read the readme-files in those folders for more information. A mentioned previously, manually adding a x-data to your app with the same name (`x-data/menu-item/menu-item.xml`) will overwrite this library's included x-data.
 
 ### Controller
 
@@ -46,7 +51,7 @@ In every controller you want to use it (Page, Part or Layout) you just `require`
 
 ```javascript
 var libs = {
-    menu: require('/lib/enonic/menu')
+    menu: require('/lib/menu')
 };
 ```
 
@@ -76,6 +81,7 @@ We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_e
 
 | Lib version        | XP version |
 | ------------- | ------------- |
+| 3.0.0+ | 7.0.0 |
 | 2.0.0+ | 6.13.1 |
 | 1.3.3 | 6.3.0 |
 | 1.3.2 | 6.3.0 |

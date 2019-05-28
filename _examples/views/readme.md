@@ -4,7 +4,7 @@ For your convenience we've added a few example views for rendering fully semanti
 
 ## Installation:
 
-* *First: Install the lib and optionally add one of the mixins*
+* *First: Install the lib and optionally add one of the extra data*
 * Setup your **view** by copying the code from one of the HTML files in this folder.
 * Setup your **controller** by copying from the JavaScript examples in this document.
 
