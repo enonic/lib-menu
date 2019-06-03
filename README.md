@@ -43,7 +43,7 @@ After this, any content type with this x-data will now get the fields/settings f
 <x-data name="menu-item" />
 ```
 
-Check the `/_examples` folder for a few x-datas you can just copy and paste into your site. Also read the readme-files in those folders for more information. A mentioned previously, manually adding a x-data to your app with the same name (`x-data/menu-item/menu-item.xml`) will overwrite this library's included x-data.
+Check the `/_examples` folder for a few x-datas you can just copy and paste into your site. Also read the readme-files in those folders for more information. As mentioned previously, manually adding a x-data to your app with the same name (`x-data/menu-item/menu-item.xml`) will overwrite this library's included x-data.
 
 ### Controller
 
