@@ -1,11 +1,11 @@
-var libs = {
-    portal: require('/lib/xp/portal'),
-    content: require('/lib/xp/content'),
-    util: require('/lib/util')
+const libs = {
+    portal: require("/lib/xp/portal"),
+    content: require("/lib/xp/content"),
+    util: require("/lib/util"),
 };
 
-var globals = {
-    appPath: libs.util.app.getJsonName()
+const globals = {
+    appPath: libs.util.app.getJsonName(),
 };
 
 /**
@@ -15,55 +15,51 @@ var globals = {
  *   @param {Boolean} [params.showHomepage=true] - Disable return of item for the site homepage.
  *   @param {String} [params.homepageTitle=null] - Customize (overwrite) the displayName of home/site link (if used). Common usage: "Home" or "Start".
  *   @param {String} [params.dividerHtml=null] - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
- *   @param {String} [params.urlType=null] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
+ *   @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
-exports.getBreadcrumbMenu = function (params) {
-    var site = libs.portal.getSite();
-    var content = libs.portal.getContent() || site; // Fallback to site if there's no content (like in errorHandlers).
+exports.getBreadcrumbMenu = function (params = {}) {
+    let site = libs.portal.getSite();
+    let content = libs.portal.getContent() || site; // Fallback to site if there's no content (like in errorHandlers).
 
-    var breadcrumbItems = []; // Stores each menu item
-    var breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
+    let breadcrumbItems = []; // Stores each menu item
+    let breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
 
     // Safely take care of all incoming settings and set defaults, for use in current scope only
-    var settings = {
+    const settings = {
         linkActiveItem: params.linkActiveItem || false,
         showHomepage: params.showHomepage || true,
         homepageTitle: params.homepageTitle || null,
         dividerHtml: params.dividerHtml || null,
-        urlType: params.urlType || null
+        urlType: params.urlType == "absolute" ? "absolute" : "server",
     };
-
-    // We only allow 'server' or 'absolute' options for URL type.
-    if (settings.urlType) {
-        switch (settings.urlType) {
-        case 'absolute':
-            break; // Pass through
-        default:
-            settings.urlType = 'server';
-        }
-    }
 
     // Loop the entire path for current content based on the slashes. Generate one JSON item node for each item.
     // If on frontpage, skip the path-loop
     if (content._path != site._path) {
-        var fullPath = content._path;
-        var arrVars = fullPath.split("/");
-        var arrLength = arrVars.length;
-        for (var i = 1; i < arrLength - 1; i++) { // Skip first item - the site - since it is handled separately.
-            var lastVar = arrVars.pop();
-            if (lastVar != '') {
-                var curItem = libs.content.get({key: arrVars.join("/") + "/" + lastVar}); // Make sure item exists
+        let fullPath = content._path;
+        let arrVars = fullPath.split("/");
+        let arrLength = arrVars.length;
+        for (let i = 1; i < arrLength - 1; i++) {
+            // Skip first item - the site - since it is handled separately.
+            let lastVar = arrVars.pop();
+            if (lastVar != "") {
+                //Could replace with 7.1.0 exists
+                let curItem = libs.content.get({
+                    key: arrVars.join("/") + "/" + lastVar,
+                }); // Make sure item exists
                 if (curItem) {
-                    var item = {};
-                    var curItemUrl = libs.portal.pageUrl({
+                    let item = {};
+                    let curItemUrl = libs.portal.pageUrl({
                         path: curItem._path,
-                        type: settings.urlType
+                        type: settings.urlType,
                     });
                     item.text = curItem.displayName;
-                    if (content._path === curItem._path) { // Is current node active?
+                    if (content._path === curItem._path) {
+                        // Is current node active?
                         item.active = true;
-                        if (settings.linkActiveItem) { // Respect setting for creating links for active item
+                        if (settings.linkActiveItem) {
+                            // Respect setting for creating links for active item
                             item.url = curItemUrl;
                         }
                     } else {
@@ -79,21 +75,21 @@ exports.getBreadcrumbMenu = function (params) {
 
     // Add Home button linking to site home, if wanted
     if (settings.showHomepage) {
-        var homeUrl = libs.portal.pageUrl({
+        let homeUrl = libs.portal.pageUrl({
             path: site._path,
-            type: settings.urlType
+            type: settings.urlType,
         });
-        var item = {
+        let item = {
             text: settings.homepageTitle || site.displayName, // Fallback to site displayName if no custom name given
             url: homeUrl,
-            active: (content._path === site._path),
-            type: site.type
+            active: content._path === site._path,
+            type: site.type,
         };
         breadcrumbItems.push(item);
     }
 
     // Add divider html (if any) and reverse the menu item array
-    breadcrumbMenu.divider = settings.dividerHtml || null;
+    breadcrumbMenu.divider = settings.dividerHtml;
     breadcrumbMenu.items = breadcrumbItems.reverse();
 
     return breadcrumbMenu;
@@ -102,15 +98,16 @@ exports.getBreadcrumbMenu = function (params) {
 /**
  * Get menu tree
  * @param {integer} levels - menu levels to get
+ * @param {Object} params - configure the end result. see getSubMenus
  * @returns {Array}
  */
-exports.getMenuTree = function (levels) {
-    var menu = [];
-    var site = libs.portal.getSite();
-    levels = (libs.util.value.isInt(levels) ? levels : 1);
+exports.getMenuTree = function (levels, params) {
+    let menu = [];
+    let site = libs.portal.getSite();
+    //levels = libs.util.value.isInt(levels) ? levels : 1;
 
     if (site) {
-        menu = doGetSubMenus(site, levels);
+        menu = getSubMenus(site, levels, params);
     }
 
     return menu;
@@ -120,37 +117,91 @@ exports.getMenuTree = function (levels) {
  * Returns submenus of a parent menuitem.
  * @param {Content} parentContent - content object obtained with 'portal.getContent', 'portal.getSite' or any 'content.*' commands
  * @param {Integer} levels - The number of submenus to retrieve
+ * @param {Object} params - parameteres to configure 
+ *   @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
  * @return {Array} Array of submenus
  */
-exports.getSubMenus = function (parentContent, levels) {
-    return doGetSubMenus(parentContent, levels);
-};
+exports.getSubMenus = getSubMenus;
 
-var doGetSubMenus = function (parentContent, levels) {
-    var subMenus = [];
-    var currentContent = libs.portal.getContent() || parentContent; // Fallback to currentContent if there's no content (like in errorHandlers).;
+function getSubMenus(parentContent, levels, params = {}) {
+    levels = levels || 1;
+    const settings = {
+        urlType: params.urlType == "absolute" ? "absolute" : "server",
+    };
 
-    if (parentContent.type === 'portal:site' && isMenuItem(parentContent)) {
-        subMenus.push(renderMenuItem(currentContent, parentContent, 0));
-    }
+    // Fallback to currentContent if there's no content (like in errorHandlers).
+    var currentContent = libs.portal.getContent() || parentContent;
 
-    var children = getChildMenuItems(parentContent);
+    return iterateSubMenus(parentContent, levels);
 
-    levels--;
+    function iterateSubMenus(parentContent, levels) {
+        let subMenus = [];
 
-    var loopLength = children.hits.length;
-    for (var i = 0; i < loopLength; i++) {
-        var child = children.hits[i];
-        if (isMenuItem(child)) {
-            subMenus.push(renderMenuItem(currentContent, child, levels));
+        if (parentContent.type === "portal:site" && isMenuItem(parentContent)) {
+            subMenus.push(renderMenuItem(parentContent, 0));
         }
+        
+        let children = getChildMenuItems(parentContent);
+
+        levels--;
+
+        let loopLength = children.hits.length;
+        for (let i = 0; i < loopLength; i++) {
+            let child = children.hits[i];
+            subMenus.push(renderMenuItem(child, levels));
+        }
+
+        return subMenus;
     }
 
-    return subMenus;
-};
+    //currentContent is by sub method
+    function renderMenuItem(content, levels) {
+        let subMenus = [];
+        if (levels > 0) {
+            subMenus = iterateSubMenus(content, levels);
+        }
 
-var getChildMenuItems = function (parent) {
+        let inPath = false;
+        let isActive = false;
 
+        // Is the menuitem we are processing in the currently viewed content's path?
+        if (
+            content._path ===
+            currentContent._path.substring(0, content._path.length)
+        ) {
+            inPath = true;
+        }
+
+        // Is the currently viewed content the current menuitem we are processing?
+        if (content._path === currentContent._path) {
+            isActive = true;
+            inPath = false; // Reset this so an menuitem isn't both in a path and active (makes no sense)
+        }
+
+        let menuItem = content.x[globals.appPath]["menu-item"];
+        let url = libs.portal.pageUrl({ id: content._id, type: settings.urlType });
+
+        return {
+            displayName: content.displayName,
+            menuName:
+                menuItem.menuName && menuItem.menuName.length
+                    ? menuItem.menuName
+                    : null,
+            path: content._path,
+            name: content._name,
+            id: content._id,
+            hasChildren: subMenus.length > 0,
+            inPath: inPath,
+            isActive: isActive,
+            newWindow: menuItem.newWindow ? menuItem.newWindow : false,
+            type: content.type,
+            url,
+            children: subMenus,
+        };
+    }
+}
+
+function getChildMenuItems(parent) {
     return libs.content.query({
         count: 1000,
         sort: parent.childOrder,
@@ -160,25 +211,21 @@ var getChildMenuItems = function (parent) {
                     {
                         hasValue: {
                             field: "_parentPath",
-                            values: [
-                                "/content" + parent._path
-                            ]
-                        }
-                    }
-                    ,
+                            values: ["/content" + parent._path],
+                        },
+                    },
                     {
                         hasValue: {
-                            field: "x." + globals.appPath + ".menu-item.menuItem",
-                            values: [
-                                "true"
-                            ]
-                        }
-                    }
-                ]
-            }
-        }
+                            field:
+                                "x." + globals.appPath + ".menu-item.menuItem",
+                            values: ["true"],
+                        },
+                    },
+                ],
+            },
+        },
     });
-};
+}
 
 function isMenuItem(content) {
     var extraData = content.x;
@@ -186,47 +233,10 @@ function isMenuItem(content) {
         return false;
     }
     var extraDataModule = extraData[globals.appPath];
-    if (!extraDataModule || !extraDataModule['menu-item']) {
+    if (!extraDataModule || !extraDataModule["menu-item"]) {
         return false;
     }
-    var menuItemMetadata = extraDataModule['menu-item'] || {};
+    var menuItemMetadata = extraDataModule["menu-item"] || {};
 
-    return menuItemMetadata['menuItem'];
-}
-
-function renderMenuItem(currentContent, content, levels) {
-    var subMenus = [];
-    if (levels > 0) {
-        subMenus = doGetSubMenus(content, levels);
-    }
-
-    var inPath = false;
-    var isActive = false;
-
-    // Is the menuitem we are processing in the currently viewed content's path?
-    if (content._path === currentContent._path.substring(0, content._path.length)) {
-        inPath = true;
-    }
-
-    // Is the currently viewed content the current menuitem we are processing?
-    if (content._path === currentContent._path) {
-        isActive = true;
-        inPath = false; // Reset this so an menuitem isn't both in a path and active (makes no sense)
-    }
-
-    var menuItem = content.x[globals.appPath]['menu-item'];
-
-    return {
-        displayName: content.displayName,
-        menuName: menuItem.menuName && menuItem.menuName.length ? menuItem.menuName : null,
-        path: content._path,
-        name: content._name,
-        id: content._id,
-        hasChildren: subMenus.length > 0,
-        inPath: inPath,
-        isActive: isActive,
-        newWindow: menuItem.newWindow ? menuItem.newWindow : false,
-        type: content.type,
-        children: subMenus
-    };
+    return menuItemMetadata.menuItem;
 }
