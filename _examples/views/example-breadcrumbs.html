@@ -13,8 +13,8 @@
 		 ">
 		 	 <!-- If we're on the current content, and it is not meant to be linked, the JavaScript removes the URL from it, so we just check if the item has an URL or not. -->
 			 <!-- First try to create a link, if URL is present. Otherwise go to next line ("data-th-unless") and output the item without any link -->
-			 <a href="/" data-th-if="${item.url}" data-th-href="${item.url}" data-th-text="${item.text}">Home</a>
-			 <span data-th-unless="${item.url}" data-th-text="${item.text}" data-th-remove="tag">Home</span>
+			 <a href="/" data-th-if="${item.url}" data-th-href="${item.url}" data-th-text="${item.title}">Home</a>
+			 <span data-th-unless="${item.url}" data-th-text="${item.title}" data-th-remove="tag">Home</span>
 			 <!-- Last, if divider HTML is sent to the function when calling it, output this now, but not if we're on the last item. -->
 			 <div data-th-remove="tag" data-th-if="${breadcrumbs.divider} and !${iterStat.last}" data-th-utext="${breadcrumbs.divider}"></div>
 		 </li>

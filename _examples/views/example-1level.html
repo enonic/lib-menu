@@ -19,8 +19,8 @@
 				(menuItem.inPath ? ' in-path' : '') +
 				(menuItem.isActive ? ' active' : '')
 			}">
-			<a href="#" data-th-href="${portal.pageUrl({'_path=' + menuItem.path})}"
-				data-th-text="${menuItem.menuName} ?: ${menuItem.displayName}"
+			<a href="#" data-th-href="${menuItem.url}"
+				data-th-text="${menuItem.title}"
 				data-th-target="${menuItem.newWindow ? '_blank' : ''}">Page</a>
 		</li>
 	</ul>

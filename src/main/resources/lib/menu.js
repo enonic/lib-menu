@@ -80,7 +80,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
             type: settings.urlType,
         });
         let item = {
-            text: settings.homepageTitle || site.displayName, // Fallback to site displayName if no custom name given
+            title: settings.homepageTitle || site.displayName, // Fallback to site displayName if no custom name given
             url: homeUrl,
             active: content._path === site._path,
             type: site.type,
@@ -99,13 +99,13 @@ exports.getBreadcrumbMenu = function (params = {}) {
  * Get menu tree
  * @param {integer} levels - menu levels to get
  * @param {Object} params - configure the end result. see getSubMenus
+ *   @param {String} [params.urlType=Server] - Control type of URL thats generated in getSubMenus.
+
  * @returns {Array}
  */
 exports.getMenuTree = function (levels, params) {
     let menu = [];
     let site = libs.portal.getSite();
-    //levels = libs.util.value.isInt(levels) ? levels : 1;
-
     if (site) {
         menu = getSubMenus(site, levels, params);
     }
@@ -116,21 +116,20 @@ exports.getMenuTree = function (levels, params) {
 /**
  * Returns submenus of a parent menuitem.
  * @param {Content} parentContent - content object obtained with 'portal.getContent', 'portal.getSite' or any 'content.*' commands
- * @param {Integer} levels - The number of submenus to retrieve
+ * @param {Integer} [levels=1] - The number of submenus to retrieve
  * @param {Object} params - parameteres to configure 
  *   @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
  * @return {Array} Array of submenus
  */
 exports.getSubMenus = getSubMenus;
 
-function getSubMenus(parentContent, levels, params = {}) {
-    levels = levels || 1;
+function getSubMenus(parentContent, levels = 1, params = {}) {
     const settings = {
         urlType: params.urlType == "absolute" ? "absolute" : "server",
     };
 
     // Fallback to currentContent if there's no content (like in errorHandlers).
-    var currentContent = libs.portal.getContent() || parentContent;
+    let currentContent = libs.portal.getContent() || parentContent;
 
     return iterateSubMenus(parentContent, levels);
 
@@ -180,19 +179,20 @@ function getSubMenus(parentContent, levels, params = {}) {
 
         let menuItem = content.x[globals.appPath]["menu-item"];
         let url = libs.portal.pageUrl({ id: content._id, type: settings.urlType });
+        let title = content.displayName;
+
+        if (menuItem.menuName && Array.isArray(menuItem.menuName) == false) {
+            title = menuItem.menuName;
+        }
 
         return {
-            displayName: content.displayName,
-            menuName:
-                menuItem.menuName && menuItem.menuName.length
-                    ? menuItem.menuName
-                    : null,
+            title,
             path: content._path,
             name: content._name,
             id: content._id,
             hasChildren: subMenus.length > 0,
-            inPath: inPath,
-            isActive: isActive,
+            inPath,
+            isActive,
             newWindow: menuItem.newWindow ? menuItem.newWindow : false,
             type: content.type,
             url,
