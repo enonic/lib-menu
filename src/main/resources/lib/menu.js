@@ -54,6 +54,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
                         path: curItem._path,
                         type: settings.urlType,
                     });
+                    item.title = curItem.displayName;
                     item.text = curItem.displayName;
                     if (content._path === curItem._path) {
                         // Is current node active?
@@ -81,6 +82,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
         });
         let item = {
             title: settings.homepageTitle || site.displayName, // Fallback to site displayName if no custom name given
+            text: settings.homepageTitle || site.displayName,
             url: homeUrl,
             active: content._path === site._path,
             type: site.type,
@@ -117,7 +119,7 @@ exports.getMenuTree = function (levels, params) {
  * Returns submenus of a parent menuitem.
  * @param {Content} parentContent - content object obtained with 'portal.getContent', 'portal.getSite' or any 'content.*' commands
  * @param {Integer} [levels=1] - The number of submenus to retrieve
- * @param {Object} params - parameteres to configure 
+ * @param {Object} params - parameteres to configure
  *   @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
  * @return {Array} Array of submenus
  */
@@ -139,7 +141,7 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
         if (parentContent.type === "portal:site" && isMenuItem(parentContent)) {
             subMenus.push(renderMenuItem(parentContent, 0));
         }
-        
+
         let children = getChildMenuItems(parentContent);
 
         levels--;
@@ -178,7 +180,10 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
         }
 
         let menuItem = content.x[globals.appPath]["menu-item"];
-        let url = libs.portal.pageUrl({ id: content._id, type: settings.urlType });
+        let url = libs.portal.pageUrl({
+            id: content._id,
+            type: settings.urlType,
+        });
         let title = content.displayName;
 
         if (menuItem.menuName && Array.isArray(menuItem.menuName) == false) {
@@ -187,6 +192,11 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
 
         return {
             title,
+            displayName: content.displayName,
+            menuName:
+                menuItem.menuName && menuItem.menuName.length
+                    ? menuItem.menuName
+                    : null,
             path: content._path,
             name: content._name,
             id: content._id,

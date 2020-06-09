@@ -5,8 +5,8 @@
 			  ${iterStat.first ? ' first' : ''} +
 			  ${iterStat.last ? ' last' : ''}
 		 ">
-			 <a href="/" data-th-if="${item.url}" data-th-href="${item.url}" data-th-text="${item.text}">Home</a>
-			 <span data-th-unless="${item.url}" data-th-text="${item.text}" data-th-remove="tag">Home</span>
+			 <a href="/" data-th-if="${item.url}" data-th-href="${item.url}" data-th-text="${item.title}">Home</a>
+			 <span data-th-unless="${item.url}" data-th-text="${item.title}" data-th-remove="tag">Home</span>
 			 <div data-th-remove="tag" data-th-if="${breadcrumbs.divider} and !${iterStat.last}" data-th-utext="${breadcrumbs.divider}"></div>
 		 </li>
 	</ol>
