@@ -16,6 +16,7 @@ const globals = {
  *   @param {String} [params.homepageTitle=null] - Customize (overwrite) the displayName of home/site link (if used). Common usage: "Home" or "Start".
  *   @param {String} [params.dividerHtml=null] - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
  *   @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
+ *   @param {String} [params.navigationAriaLabel=null] - The 'aria-label' attribute text on the '<nav>' element. This should be the name of the navigation, e.g "Breadcrumbs".
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
 exports.getBreadcrumbMenu = function (params = {}) {
@@ -32,6 +33,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
         homepageTitle: params.homepageTitle || null,
         dividerHtml: params.dividerHtml || null,
         urlType: params.urlType == "absolute" ? "absolute" : "server",
+        navigationAriaLabel: params.navigationAriaLabel || null,
     };
 
     // Loop the entire path for current content based on the slashes. Generate one JSON item node for each item.
@@ -92,6 +94,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
 
     // Add divider html (if any) and reverse the menu item array
     breadcrumbMenu.divider = settings.dividerHtml;
+    breadcrumbMenu.navigationAriaLabel = settings.navigationAriaLabel;
     breadcrumbMenu.items = breadcrumbItems.reverse();
 
     return breadcrumbMenu;
