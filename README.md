@@ -47,21 +47,32 @@ Check the `/_examples` folder for a few x-datas you can just copy and paste into
 
 ### Controller
 
-In every controller you want to use it (Page, Part or Layout) you just `require` the `/lib/menu` library, like so:
+In every controller you want to use it (Page, Part or Layout) you just `require` the `/lib/menu` library.
 
+Example:
 ```javascript
 var libs = {
     menu: require('/lib/menu')
 };
 ```
 
-To access any of the functions from this library, just type something like this:
+To access any of the functions from this library use:
 
+<h4>Menu structure</h4>
+
+Get 2 levels of menu based on content setting 'Show in menu'
 ```javascript
-var menuItems = libs.menu.getMenuTree(2); // Get 2 levels of menu based on content setting 'Show in menu'.
-var breadcrumbItems = libs.menu.getBreadcrumbMenu(); // Get a breadcrumb menu for current content.
+var menuItems = libs.menu.getMenuTree(2); 
+```
+<h4>Breadcrumb structure</h4>
 
-// To be more flexible, subMenuItems require a content to be sent in.
+Get a breadcrumb menu for current content. AriaLabel is optional but recommended.
+```javascript
+var breadcrumbItems = libs.menu.getBreadcrumbMenu({ navigationAriaLabel: "breadcrumbs" }); 
+```
+
+To be more flexible, subMenuItems require a content to be sent in.
+```javascript
 var content = libs.portal.getContent();
 var subMenuItems = libs.menu.getSubMenus(content,1); // Get 1 level of submenu (from current content)
 ```
@@ -81,8 +92,9 @@ We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_e
 
 | Lib version        | XP version |
 | ------------- | ------------- |
-| 3.0.0+ | 7.0.0 |
-| 2.0.0+ | 6.13.1 |
+| 3.2.0+ | 7.0.0 |
+| 3.0.0 | 7.0.0 |
+| 2.0.0 | 6.13.1 |
 | 1.3.3 | 6.3.0 |
 | 1.3.2 | 6.3.0 |
 | 1.3.1 | 6.3.0 |
