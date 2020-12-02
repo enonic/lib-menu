@@ -10,22 +10,16 @@ const globals = {
 
 /**
  * Returns the full breadcrumb menu path for the current content and site.
- * @param {Object} params - A JSON object containing the (optional) settings for the function.
+ * @param {Object} [params={}] - A JSON object containing the (optional) settings for the function.
  *   @param {Boolean} [params.linkActiveItem=false] - Wrap the active (current content) item with a link.
  *   @param {Boolean} [params.showHomepage=true] - Disable return of item for the site homepage.
  *   @param {String} [params.homepageTitle=null] - Customize (overwrite) the displayName of home/site link (if used). Common usage: "Home" or "Start".
  *   @param {String} [params.dividerHtml=null] - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
  *   @param {String} [params.urlType="Server"] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
- *   @param {String} [params.navigationAriaLabel=null] - The 'aria-label' attribute text on the '<nav>' element. This should be the name of the navigation, e.g "Breadcrumbs".
+ *   @param {String} [params.ariaLabel="breadcrumbs"] - The 'aria-label' attribute text on the '<nav>' element. This should be the name of the navigation, e.g "Breadcrumbs".
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
 exports.getBreadcrumbMenu = function (params = {}) {
-    let site = libs.portal.getSite();
-    let content = libs.portal.getContent() || site; // Fallback to site if there's no content (like in errorHandlers).
-
-    let breadcrumbItems = []; // Stores each menu item
-    let breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
-
     // Safely take care of all incoming settings and set defaults, for use in current scope only
     let settings = {
         linkActiveItem: params.linkActiveItem || false,
@@ -33,33 +27,39 @@ exports.getBreadcrumbMenu = function (params = {}) {
         homepageTitle: params.homepageTitle || null,
         dividerHtml: params.dividerHtml || null,
         urlType: params.urlType == "absolute" ? "absolute" : "server",
-        navigationAriaLabel: params.navigationAriaLabel || null,
+        ariaLabel: params.ariaLabel || "breadcrumbs",
     };
+    
+    const site = libs.portal.getSite();
+    const content = libs.portal.getContent() || site; // Fallback to site if there's no content (like in errorHandlers).
+
+    const breadcrumbItems = []; // Stores each menu item
+    const breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
 
     // Loop the entire path for current content based on the slashes. Generate one JSON item node for each item.
     // If on frontpage, skip the path-loop
     if (content._path != site._path) {
-        let fullPath = content._path;
-        let arrVars = fullPath.split("/");
-        let arrLength = arrVars.length;
+        const arrVars = content._path.split("/");
+        const arrLength = arrVars.length;
+
+        // Skip first item - the site - since it is handled separately.
         for (let i = 1; i < arrLength - 1; i++) {
-            // Skip first item - the site - since it is handled separately.
-            let lastVar = arrVars.pop();
+            const lastVar = arrVars.pop();
             if (lastVar != "") {
-                //Could replace with 7.1.0 exists
-                let curItem = libs.content.get({
+                const curItem = libs.content.get({
                     key: arrVars.join("/") + "/" + lastVar,
-                }); // Make sure item exists
+                }); 
+                // Make sure item exists
                 if (curItem) {
-                    let item = {};
-                    let curItemUrl = libs.portal.pageUrl({
+                    const item = {};
+                    const curItemUrl = libs.portal.pageUrl({
                         path: curItem._path,
                         type: settings.urlType,
                     });
                     item.title = curItem.displayName;
                     item.text = curItem.displayName;
                     if (content._path === curItem._path) {
-                        // Is current node active?
+                        // Is current item active?
                         item.active = true;
                         if (settings.linkActiveItem) {
                             // Respect setting for creating links for active item
@@ -94,7 +94,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
 
     // Add divider html (if any) and reverse the menu item array
     breadcrumbMenu.divider = settings.dividerHtml;
-    breadcrumbMenu.navigationAriaLabel = settings.navigationAriaLabel;
+    breadcrumbMenu.ariaLabel = settings.ariaLabel;
     breadcrumbMenu.items = breadcrumbItems.reverse();
 
     return breadcrumbMenu;
@@ -104,33 +104,44 @@ exports.getBreadcrumbMenu = function (params = {}) {
  * Get menu tree
  * @param {integer} levels - menu levels to get
  * @param {Object} params - configure the end result. see getSubMenus
- *   @param {String} [params.urlType=Server] - Control type of URL thats generated in getSubMenus.
-
- * @returns {Array}
+ * @param {String} [params.ariaLabel="menu"] - The aria label added to the nav element
+ * @returns {Object} 
+ * @returns {Array} object.menuItems The list of menuItems and children
+ * @returns {String} object.ariaLabel The ariaLabel used for this menu
  */
 exports.getMenuTree = function (levels, params) {
-    let menu = [];
-    let site = libs.portal.getSite();
+    if (params.ariaLabel == undefined)
+        params.ariaLabel = "menu";
+    const site = libs.portal.getSite();
+    let menuItems = [];
     if (site) {
-        menu = getSubMenus(site, levels, params);
-    }
-
-    return menu;
+        menuItems = getSubMenus(site, levels, params);
+    } 
+    
+    return {
+        menuItems,
+        ariaLabel: params.ariaLabel,
+    };
 };
 
 /**
  * Returns submenus of a parent menuitem.
  * @param {Content} parentContent - content object obtained with 'portal.getContent', 'portal.getSite' or any 'content.*' commands
  * @param {Integer} [levels=1] - The number of submenus to retrieve
- * @param {Object} params - parameteres to configure
- *   @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
- * @return {Array} Array of submenus
+ * @param {Object} [params = {}] - parameteres to configure
+ *  @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
+ *  @param {Boolean} [params.returnContent=false] - Controls what info to return 
+ *  @param {String} [params.query=""] - Query string to add when searching for menu items
+ * @return {Array}
  */
 exports.getSubMenus = getSubMenus;
 
 function getSubMenus(parentContent, levels = 1, params = {}) {
+    //default properties
     const settings = {
         urlType: params.urlType == "absolute" ? "absolute" : "server",
+        returnContent: params.returnContent != undefined ? params.returnContent : false,
+        query: params.query ? params.query : "",
     };
 
     // Fallback to currentContent if there's no content (like in errorHandlers).
@@ -139,17 +150,17 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
     return iterateSubMenus(parentContent, levels);
 
     function iterateSubMenus(parentContent, levels) {
-        let subMenus = [];
+        const subMenus = [];
 
         if (parentContent.type === "portal:site" && isMenuItem(parentContent)) {
             subMenus.push(renderMenuItem(parentContent, 0));
         }
 
-        let children = getChildMenuItems(parentContent);
+        const children = getChildMenuItems(parentContent, settings.query);
 
         levels--;
 
-        let loopLength = children.hits.length;
+        const loopLength = children.hits.length;
         for (let i = 0; i < loopLength; i++) {
             let child = children.hits[i];
             subMenus.push(renderMenuItem(child, levels));
@@ -182,8 +193,8 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
             inPath = false; // Reset this so an menuitem isn't both in a path and active (makes no sense)
         }
 
-        let menuItem = content.x[globals.appPath]["menu-item"];
-        let url = libs.portal.pageUrl({
+        const menuItem = content.x[globals.appPath]["menu-item"];
+        const url = libs.portal.pageUrl({
             id: content._id,
             type: settings.urlType,
         });
@@ -193,13 +204,8 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
             title = menuItem.menuName;
         }
 
-        return {
+        const showMenu = {
             title,
-            displayName: content.displayName,
-            menuName:
-                menuItem.menuName && menuItem.menuName.length
-                    ? menuItem.menuName
-                    : null,
             path: content._path,
             name: content._name,
             id: content._id,
@@ -211,12 +217,20 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
             url,
             children: subMenus,
         };
+        
+        if (settings.returnContent) {
+            showMenu.content = content;
+        }
+
+        return showMenu;
     }
 }
 
-function getChildMenuItems(parent) {
+// Searches for menu items and returns the query result
+function getChildMenuItems(parent, query) {
     return libs.content.query({
         count: 1000,
+        query,
         sort: parent.childOrder,
         filters: {
             boolean: {
@@ -240,6 +254,7 @@ function getChildMenuItems(parent) {
     });
 }
 
+// Simple check if content is a menu item
 function isMenuItem(content) {
     var extraData = content.x;
     if (!extraData) {
