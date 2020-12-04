@@ -31,10 +31,15 @@ exports.getBreadcrumbMenu = function (params = {}) {
     };
     
     const site = libs.portal.getSite();
-    const content = libs.portal.getContent() || site; // Fallback to site if there's no content (like in errorHandlers).
+    const content = libs.portal.getContent(); // Fallback to site if there's no content (like in errorHandlers).
 
     const breadcrumbItems = []; // Stores each menu item
     const breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
+
+    //If no content is found return no results
+    if (content == null || content == undefined) {
+        return breadcrumbItems;
+    }
 
     // Loop the entire path for current content based on the slashes. Generate one JSON item node for each item.
     // If on frontpage, skip the path-loop
