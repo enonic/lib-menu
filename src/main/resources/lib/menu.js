@@ -110,8 +110,6 @@ exports.getBreadcrumbMenu = function (params = {}) {
  * @returns {String} object.ariaLabel The ariaLabel used for this menu
  */
 exports.getMenuTree = function (levels, params) {
-    if (params.ariaLabel == undefined)
-        params.ariaLabel = "menu";
     const site = libs.portal.getSite();
     let menuItems = [];
     if (site) {
@@ -120,7 +118,7 @@ exports.getMenuTree = function (levels, params) {
     
     return {
         menuItems,
-        ariaLabel: params.ariaLabel,
+        ariaLabel: params.ariaLabel || "menu",
     };
 };
 
@@ -144,10 +142,14 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
         query: params.query ? params.query : "",
     };
 
-    // Fallback to currentContent if there's no content (like in errorHandlers).
-    let currentContent = libs.portal.getContent() || parentContent;
+    let currentContent = libs.portal.getContent();
 
-    return iterateSubMenus(parentContent, levels);
+    // In controllers without content return an empty menu
+    if (currentContent) {
+        return iterateSubMenus(parentContent, levels);
+    } else {
+        return [];
+    }
 
     function iterateSubMenus(parentContent, levels) {
         const subMenus = [];
@@ -190,7 +192,7 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
         // Is the currently viewed content the current menuitem we are processing?
         if (content._path === currentContent._path) {
             isActive = true;
-            inPath = false; // Reset this so an menuitem isn't both in a path and active (makes no sense)
+            inPath = false; // Reset this so an menuitem isn't both in a path and active
         }
 
         const menuItem = content.x[globals.appPath]["menu-item"];
@@ -216,11 +218,8 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
             type: content.type,
             url,
             children: subMenus,
+            content: settings.returnContent ? content : undefined,
         };
-        
-        if (settings.returnContent) {
-            showMenu.content = content;
-        }
 
         return showMenu;
     }

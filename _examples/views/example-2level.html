@@ -1,4 +1,4 @@
-<nav data-th-if="${menuItems}" role="navigation">
+<nav data-th-if="${menu}" role="navigation">
 	<ul class="menu-main">
 		<!--/*
 			INFO: Remove the comment around this block to add a "Home" link first in the menu.
@@ -12,7 +12,7 @@
 			</a>
 		</li>
 		*/-->
-		<li data-th-each="menuItem : ${menuItems}"
+		<li data-th-each="menuItem : ${menu.menuItems}"
 			data-th-class="${
 				'page_item' +
 				(menuItem.hasChildren ? ' has-children' : '') +

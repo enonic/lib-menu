@@ -12,7 +12,7 @@ To install this library you need to add a new dependency to your app's `build.gr
 
 ```
 dependencies {
-    include 'com.enonic.lib:lib-menu:3.1.0'
+    include 'com.enonic.lib:lib-menu:4.0.0'
 }
 ```
 
@@ -49,41 +49,57 @@ Check the `/_examples` folder for a few x-datas you can just copy and paste into
 
 In every controller you want to use it (Page, Part or Layout) you just `require` the `/lib/menu` library.
 
-Example:
+To access any of the functions from this library use:
+
 ```javascript
 var libs = {
     menu: require('/lib/menu')
 };
 ```
 
-To access any of the functions from this library use:
-
 <h4>Menu structure</h4>
 
 Get 2 levels of menu based on content setting 'Show in menu'
 ```javascript
-var menuItems = libs.menu.getMenuTree(2); 
+let menuItems = libs.menu.getMenuTree(2); 
 ```
+
+Get 2 levels of menu based on content setting 'Show in menu'
+```javascript
+let menuItems = libs.menu.getMenuTree(2, { content}); 
+```
+
+#### getMenuTree(level, options)
+| Param | default | description |
+| ----- | ------- | ----------- |
+| `levels` | 1 | The number of submenus to retrieve |
+| `options` | {} | Options object |
+| `options.ariaLabel` | "menu" | The aria label for the menu |
+| `options.urlType`|  "server" | Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute' |
+| options.returnContent | false | Controls what info to return 
+| options.query | ""  | Query string to add when searching for menu items
+
 <h4>Breadcrumb structure</h4>
 
 Get a breadcrumb menu for current content. AriaLabel is optional but recommended.
 ```javascript
-var breadcrumbItems = libs.menu.getBreadcrumbMenu({ navigationAriaLabel: "breadcrumbs" }); 
+let breadcrumbItems = libs.menu.getBreadcrumbMenu({ navigationAriaLabel: "breadcrumbs" }); 
 ```
 
 To be more flexible, subMenuItems require a content to be sent in.
 ```javascript
-var content = libs.portal.getContent();
-var subMenuItems = libs.menu.getSubMenus(content,1); // Get 1 level of submenu (from current content)
+const content = libs.portal.getContent();
+let subMenuItems = libs.menu.getSubMenus(content,1); // Get 1 level of submenu (from current content)
 ```
 
 ### Thymeleaf
 
-We've included Thymeleaf fragments you can use for the different types of menues we have. They can be used like this after version `2.0.0` of this lib is installed.
+* We've included Thymeleaf fragments you can use for the different types of menues we have. In `2.0.0` version.
+* In `4.0.0` need to pass in an argument to the fragments.
 
 ```html
-<div data-th-replace="/site/views/fragments/enonic-lib-menu/menu :: main-menu"></div>
-<div data-th-replace="/site/views/fragments/enonic-lib-menu/breadcrumb :: breadcrumb"></div>
+<div data-th-replace="/site/views/fragments/enonic-lib-menu/menu :: main-menu (${menu})"></div>
+<div data-th-replace="/site/views/fragments/enonic-lib-menu/breadcrumb :: breadcrumb(${breadcrumbs})"></div>
 ```
 
 We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_examples/views/` folder, have a look there if you need to build something custom. Also read the readme-files in those folders for more information.
@@ -92,14 +108,10 @@ We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_e
 
 | Lib version        | XP version |
 | ------------- | ------------- |
-| 3.2.0+ | 7.0.0 |
-| 3.0.0 | 7.0.0 |
+| 4.0.0 | 7.0.0 |
+| 3.0.0+ | 7.0.0 |
 | 2.0.0 | 6.13.1 |
-| 1.3.3 | 6.3.0 |
-| 1.3.2 | 6.3.0 |
-| 1.3.1 | 6.3.0 |
-| 1.3.0 | 6.3.0 |
-| 1.2.0 | 6.3.0 |
+| 1.2.0+ | 6.3.0 |
 | 1.1.1 | 6.1.0 |
 | 1.1.0 | 6.1.0 |
 | 1.0.0 | 6.0.0 |
