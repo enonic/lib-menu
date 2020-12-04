@@ -66,7 +66,7 @@ let menuItems = libs.menu.getMenuTree(2);
 
 Get 2 levels of menu based on content setting 'Show in menu'
 ```javascript
-let menuItems = libs.menu.getMenuTree(2, { content}); 
+let menuItems = libs.menu.getMenuTree(2, { returnContent = true }); 
 ```
 
 #### getMenuTree(level, options)
@@ -76,8 +76,8 @@ let menuItems = libs.menu.getMenuTree(2, { content});
 | `options` | {} | Options object |
 | `options.ariaLabel` | "menu" | The aria label for the menu |
 | `options.urlType`|  "server" | Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute' |
-| options.returnContent | false | Controls what info to return 
-| options.query | ""  | Query string to add when searching for menu items
+| `options.returnContent` | false | Controls what info to return 
+| `options.query` | ""  | Query string to add when searching for menu items
 
 <h4>Breadcrumb structure</h4>
 
