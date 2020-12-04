@@ -1,6 +1,8 @@
-<nav data-th-fragment="main-menu" data-th-if="${menuItems}" role="navigation">
+<nav data-th-fragment="main-menu(menu)"
+	data-th-if="${menu.menuItems}"
+	data-th-attr="aria-label=${menu.ariaLabel}">
 	<ul class="menu-main">
-		<li data-th-each="menuItem : ${menuItems}"
+		<li data-th-each="menuItem : ${menu.menuItems}"
 			data-th-class="${
 				'page_item' +
 				(menuItem.hasChildren ? ' has-children' : '') +
@@ -42,7 +44,7 @@
 									}">
 									<a href="#" data-th-href="${submenuItem4.url}"
 										data-th-text="${submenuItem4.title}"
-									  data-th-attr="aria-current=${submenuItem4.isActive} ? 'page'"
+										data-th-attr="aria-current=${submenuItem4.isActive} ? 'page'"
 										data-th-target="${submenuItem4.newWindow ? '_blank' : ''}">Page title</a>
 								</li>
 							</ul>

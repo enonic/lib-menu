@@ -1,13 +1,22 @@
-<nav data-th-fragment="breadcrumb" data-th-if="${breadcrumbs}" role="navigation" data-th-aria-label="${breadcrumbs.navigationAriaLabel}">
+<nav data-th-fragment="breadcrumb( breadcrumbs )" data-th-if="${breadcrumbs}"
+	data-th-aria-label="${breadcrumbs.ariaLabel}">
 	<ol class="breadcrumb-menu">
-		 <li data-th-each="item, iterStat : ${breadcrumbs.items}" data-th-class="
+		<li data-th-each="item, iterStat : ${breadcrumbs.items}" data-th-class="
 			  ${item.active ? 'active' : ''} +
 			  ${iterStat.first ? ' first' : ''} +
 			  ${iterStat.last ? ' last' : ''}
 		 ">
-			 <a href="/" data-th-if="${item.url}" data-th-href="${item.url}" data-th-text="${item.title}" data-th-attr="aria-current=${item.active} ? 'location'">Home</a>
-			 <span data-th-unless="${item.url}" data-th-text="${item.title}" tabindex="0" data-th-attr="aria-current=${item.active} ? 'location'">Home</span>
-			 <div data-th-remove="tag" data-th-if="${breadcrumbs.divider} and !${iterStat.last}" data-th-utext="${breadcrumbs.divider}"></div>
-		 </li>
+			<a href="/"
+				data-th-if="${item.url}"
+				data-th-href="${item.url}"
+				data-th-text="${item.title}"
+				data-th-attr="aria-current=${item.active} ? 'location'">Home</a>
+			<a data-th-unless="${item.url}"
+				data-th-text="${item.title}"
+				data-th-attr="aria-current=${item.active} ? 'location'">Home</a>
+			<div data-th-remove="tag"
+				data-th-if="${breadcrumbs.divider} and !${iterStat.last}"
+				data-th-utext="${breadcrumbs.divider}"></div>
+		</li>
 	</ol>
 </nav>
