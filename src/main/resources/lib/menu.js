@@ -123,7 +123,7 @@ exports.getMenuTree = function (levels, params) {
     
     return {
         menuItems,
-        ariaLabel: params.ariaLabel || "menu",
+        ariaLabel: params ? params.ariaLabel : "menu",
     };
 };
 
