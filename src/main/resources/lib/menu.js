@@ -114,16 +114,21 @@ exports.getBreadcrumbMenu = function (params = {}) {
  * @returns {Array} object.menuItems The list of menuItems and children
  * @returns {String} object.ariaLabel The ariaLabel used for this menu
  */
-exports.getMenuTree = function (levels, params) {
+exports.getMenuTree = function (levels, params = {}) {
     const site = libs.portal.getSite();
     let menuItems = [];
     if (site) {
         menuItems = getSubMenus(site, levels, params);
     } 
+
+    let ariaLabel = "menu";
+    if (params && params.ariaLabel) {
+        ariaLabel = params.ariaLabel;
+    }
     
     return {
         menuItems,
-        ariaLabel: params ? params.ariaLabel : "menu",
+        ariaLabel,
     };
 };
 
