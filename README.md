@@ -108,7 +108,7 @@ We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_e
 
 | Lib version        | XP version |
 | ------------- | ------------- |
-| 4.0.0 | 7.0.0 |
+| 4.0.0+ | 7.0.0 |
 | 3.0.0+ | 7.0.0 |
 | 2.0.0 | 6.13.1 |
 | 1.2.0+ | 6.3.0 |
