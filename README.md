@@ -12,7 +12,7 @@ To install this library you need to add a new dependency to your app's `build.gr
 
 ```
 dependencies {
-    include 'com.enonic.lib:lib-menu:4.0.0'
+    include 'com.enonic.lib:lib-menu:4.0.1'
 }
 ```
 
