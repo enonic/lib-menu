@@ -2,9 +2,13 @@ plugins {
 	id 'java' // Needed for libs building without xp.apps plugin
 	id 'maven-publish'
 	id 'com.enonic.defaults' version '2.0.1'
+	id 'com.enonic.xp.base' version '3.1.0'
 }
 
 dependencies {
+	compileOnly "com.enonic.xp:portal-api:${xpVersion}"
+	compileOnly "com.enonic.xp:script-api:${xpVersion}"
+
 	compile "com.enonic.xp:lib-content:${xpVersion}"
 	compile "com.enonic.xp:lib-portal:${xpVersion}"
 	compile 'com.enonic.lib:lib-util:2.0.0'
@@ -12,5 +16,6 @@ dependencies {
 
 repositories {
 	mavenLocal()
-	jcenter()
+	mavenCentral()
+	xp.enonicRepo( 'dev' )
 }

@@ -29,9 +29,9 @@ exports.getBreadcrumbMenu = function (params = {}) {
         urlType: params.urlType == "absolute" ? "absolute" : "server",
         ariaLabel: params.ariaLabel || "breadcrumbs",
     };
-    
+
     const site = libs.portal.getSite();
-    const content = libs.portal.getContent(); // Fallback to site if there's no content (like in errorHandlers).
+    const content = getNearestContent(); // Fallback to site if there's no content (like in errorHandlers).
 
     const breadcrumbItems = []; // Stores each menu item
     const breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
@@ -53,7 +53,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
             if (lastVar != "") {
                 const curItem = libs.content.get({
                     key: arrVars.join("/") + "/" + lastVar,
-                }); 
+                });
                 // Make sure item exists
                 if (curItem) {
                     const item = {};
@@ -110,7 +110,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
  * @param {integer} levels - menu levels to get
  * @param {Object} params - configure the end result. see getSubMenus
  * @param {String} [params.ariaLabel="menu"] - The aria label added to the nav element
- * @returns {Object} 
+ * @returns {Object}
  * @returns {Array} object.menuItems The list of menuItems and children
  * @returns {String} object.ariaLabel The ariaLabel used for this menu
  */
@@ -119,13 +119,13 @@ exports.getMenuTree = function (levels, params = {}) {
     let menuItems = [];
     if (site) {
         menuItems = getSubMenus(site, levels, params);
-    } 
+    }
 
     let ariaLabel = "menu";
     if (params && params.ariaLabel) {
         ariaLabel = params.ariaLabel;
     }
-    
+
     return {
         menuItems,
         ariaLabel,
@@ -138,11 +138,16 @@ exports.getMenuTree = function (levels, params = {}) {
  * @param {Integer} [levels=1] - The number of submenus to retrieve
  * @param {Object} [params = {}] - parameteres to configure
  *  @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
- *  @param {Boolean} [params.returnContent=false] - Controls what info to return 
+ *  @param {Boolean} [params.returnContent=false] - Controls what info to return
  *  @param {String} [params.query=""] - Query string to add when searching for menu items
  * @return {Array}
  */
 exports.getSubMenus = getSubMenus;
+
+function getNearestContent() {
+    const bean = __.newBean('com.enonic.lib.menu.GetNearestContentHandler');
+    return __.toNativeObject(bean.execute());
+}
 
 function getSubMenus(parentContent, levels = 1, params = {}) {
     //default properties
@@ -152,7 +157,7 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
         query: params.query ? params.query : "",
     };
 
-    let currentContent = libs.portal.getContent();
+    let currentContent = getNearestContent();
 
     // In controllers without content return an empty menu
     if (currentContent) {
