@@ -144,6 +144,75 @@ exports.getMenuTree = function (levels, params = {}) {
  */
 exports.getSubMenus = getSubMenus;
 
+function iterateSubMenus(parentContent, levels, settings) {
+    const subMenus = [];
+
+    if (parentContent.type === "portal:site" && isMenuItem(parentContent)) {
+        subMenus.push(renderMenuItem(parentContent, 0, settings));
+    }
+
+    const children = getChildMenuItems(parentContent, settings.query);
+
+    levels--;
+
+    const loopLength = children.hits.length;
+    for (let i = 0; i < loopLength; i++) {
+        let child = children.hits[i];
+        subMenus.push(renderMenuItem(child, levels, settings));
+    }
+
+    return subMenus;
+}
+
+//currentContent is by sub method
+function renderMenuItem(content, levels, settings) {
+    let subMenus = [];
+    if (levels > 0) {
+        subMenus = iterateSubMenus(content, levels, settings);
+    }
+
+    let inPath = false;
+    let isActive = false;
+    const currentContent = libs.portal.getContent();
+    if (currentContent) {
+        if (content._path === currentContent._path) {
+            // Is the currently viewed content the current menuitem we are processing?
+            isActive = true;
+        } else if (currentContent._path.indexOf(content._path) === 0) {
+            // Is the menuitem we are processing in the currently viewed content's path?
+            inPath = true;
+        }
+    }
+
+    const menuItem = content.x[globals.appPath]["menu-item"];
+    const url = libs.portal.pageUrl({
+        id: content._id,
+        type: settings.urlType,
+    });
+    let title = content.displayName;
+
+    if (menuItem.menuName && Array.isArray(menuItem.menuName) == false) {
+        title = menuItem.menuName;
+    }
+
+    const showMenu = {
+        title,
+        path: content._path,
+        name: content._name,
+        id: content._id,
+        hasChildren: subMenus.length > 0,
+        inPath,
+        isActive,
+        newWindow: menuItem.newWindow ? menuItem.newWindow : false,
+        type: content.type,
+        url,
+        children: subMenus,
+        content: settings.returnContent ? content : undefined,
+    };
+
+    return showMenu;
+}
+
 function getSubMenus(parentContent, levels = 1, params = {}) {
     //default properties
     const settings = {
@@ -152,87 +221,7 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
         query: params.query ? params.query : "",
     };
 
-    let currentContent = libs.portal.getContent();
-
-    // In controllers without content return an empty menu
-    if (currentContent) {
-        return iterateSubMenus(parentContent, levels);
-    } else {
-        return [];
-    }
-
-    function iterateSubMenus(parentContent, levels) {
-        const subMenus = [];
-
-        if (parentContent.type === "portal:site" && isMenuItem(parentContent)) {
-            subMenus.push(renderMenuItem(parentContent, 0));
-        }
-
-        const children = getChildMenuItems(parentContent, settings.query);
-
-        levels--;
-
-        const loopLength = children.hits.length;
-        for (let i = 0; i < loopLength; i++) {
-            let child = children.hits[i];
-            subMenus.push(renderMenuItem(child, levels));
-        }
-
-        return subMenus;
-    }
-
-    //currentContent is by sub method
-    function renderMenuItem(content, levels) {
-        let subMenus = [];
-        if (levels > 0) {
-            subMenus = iterateSubMenus(content, levels);
-        }
-
-        let inPath = false;
-        let isActive = false;
-
-        // Is the menuitem we are processing in the currently viewed content's path?
-        if (
-            content._path ===
-            currentContent._path.substring(0, content._path.length)
-        ) {
-            inPath = true;
-        }
-
-        // Is the currently viewed content the current menuitem we are processing?
-        if (content._path === currentContent._path) {
-            isActive = true;
-            inPath = false; // Reset this so an menuitem isn't both in a path and active
-        }
-
-        const menuItem = content.x[globals.appPath]["menu-item"];
-        const url = libs.portal.pageUrl({
-            id: content._id,
-            type: settings.urlType,
-        });
-        let title = content.displayName;
-
-        if (menuItem.menuName && Array.isArray(menuItem.menuName) == false) {
-            title = menuItem.menuName;
-        }
-
-        const showMenu = {
-            title,
-            path: content._path,
-            name: content._name,
-            id: content._id,
-            hasChildren: subMenus.length > 0,
-            inPath,
-            isActive,
-            newWindow: menuItem.newWindow ? menuItem.newWindow : false,
-            type: content.type,
-            url,
-            children: subMenus,
-            content: settings.returnContent ? content : undefined,
-        };
-
-        return showMenu;
-    }
+    return iterateSubMenus(parentContent, levels, settings);
 }
 
 // Searches for menu items and returns the query result
