@@ -1,11 +1,11 @@
-var libs = {
+const libs = {
   graphql: require("/lib/graphql"),
 };
 
 function createGraphQLMenuTree(context) {
   return context.schemaGenerator.createObjectType({
     name: context.uniqueName("Menu"),
-    description: "An entry in the menu",
+    description: "The menu tree",
     fields: {
       menuItems: {
         type: libs.graphql.list(createGraphQLMenuItem(context)),
@@ -80,7 +80,7 @@ function createGraphQLBreadcrumbsMenu(context) {
 function createGraphQLBreadcrumbsMenuItem(context) {
   return context.schemaGenerator.createObjectType({
     name: context.uniqueName("Breadcrumbs_Item"),
-    description: "A menu item",
+    description: "A breadcrumbs menu item",
     fields: {
       title: {
         type: libs.graphql.nonNull(libs.graphql.GraphQLString),
