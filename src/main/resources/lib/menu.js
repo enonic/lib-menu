@@ -29,7 +29,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
         urlType: params.urlType == "absolute" ? "absolute" : "server",
         ariaLabel: params.ariaLabel || "breadcrumbs",
     };
-    
+
     const site = libs.portal.getSite();
     const content = libs.portal.getContent(); // Fallback to site if there's no content (like in errorHandlers).
 
@@ -53,7 +53,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
             if (lastVar != "") {
                 const curItem = libs.content.get({
                     key: arrVars.join("/") + "/" + lastVar,
-                }); 
+                });
                 // Make sure item exists
                 if (curItem) {
                     const item = {};
@@ -106,26 +106,26 @@ exports.getBreadcrumbMenu = function (params = {}) {
 };
 
 /**
- * Get menu tree
- * @param {integer} levels - menu levels to get
- * @param {Object} params - configure the end result. see getSubMenus
+ * Creates a menu tree from site
+ * @param {Number} levels - menu levels to get
+ * @param {Object} [params={}] - configure the end result. see getSubMenus
  * @param {String} [params.ariaLabel="menu"] - The aria label added to the nav element
- * @returns {Object} 
- * @returns {Array} object.menuItems The list of menuItems and children
- * @returns {String} object.ariaLabel The ariaLabel used for this menu
+ * @returns {Object}
+ *  @returns {Array} object.menuItems The list of menuItems and children
+ *  @returns {String} object.ariaLabel The ariaLabel used for this menu
  */
 exports.getMenuTree = function (levels, params = {}) {
     const site = libs.portal.getSite();
     let menuItems = [];
     if (site) {
         menuItems = getSubMenus(site, levels, params);
-    } 
+    }
 
     let ariaLabel = "menu";
     if (params && params.ariaLabel) {
         ariaLabel = params.ariaLabel;
     }
-    
+
     return {
         menuItems,
         ariaLabel,
@@ -133,17 +133,12 @@ exports.getMenuTree = function (levels, params = {}) {
 };
 
 /**
- * Returns submenus of a parent menuitem.
- * @param {Content} parentContent - content object obtained with 'portal.getContent', 'portal.getSite' or any 'content.*' commands
- * @param {Integer} [levels=1] - The number of submenus to retrieve
- * @param {Object} [params = {}] - parameteres to configure
- *  @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
- *  @param {Boolean} [params.returnContent=false] - Controls what info to return 
- *  @param {String} [params.query=""] - Query string to add when searching for menu items
- * @return {Array}
+ * Recursive method that searches through content
+ * @param {Content} parentContent
+ * @param {Number} levels
+ * @param {Object} settings
+ * @returns
  */
-exports.getSubMenus = getSubMenus;
-
 function iterateSubMenus(parentContent, levels, settings) {
     const subMenus = [];
 
@@ -164,16 +159,24 @@ function iterateSubMenus(parentContent, levels, settings) {
     return subMenus;
 }
 
-//currentContent is by sub method
+/**
+ * Calculates the end result for the menuItem that will be returned.
+ * @param {Content} content The item in the menu we want data for
+ * @param {Number} levels How deep the search should go
+ * @param {object} settings seeSubmenu
+ * @returns {Object}
+ */
 function renderMenuItem(content, levels, settings) {
     let subMenus = [];
     if (levels > 0) {
         subMenus = iterateSubMenus(content, levels, settings);
     }
 
+    const currentContent = settings.currentContent ? settings.currentContent : libs.portal.getContent();
+
     let inPath = false;
     let isActive = false;
-    const currentContent = libs.portal.getContent();
+    // Could still be empty if on an error page or something
     if (currentContent) {
         if (content._path === currentContent._path) {
             // Is the currently viewed content the current menuitem we are processing?
@@ -183,6 +186,7 @@ function renderMenuItem(content, levels, settings) {
             inPath = true;
         }
     }
+
 
     const menuItem = content.x[globals.appPath]["menu-item"];
     const url = libs.portal.pageUrl({
@@ -213,6 +217,17 @@ function renderMenuItem(content, levels, settings) {
     return showMenu;
 }
 
+/**
+ * Returns submenus of a parent menuitem.
+ * @param {Content} parentContent - content object obtained with 'portal.getContent', 'portal.getSite' or any 'content.*' commands
+ * @param {Number} [levels=1] - The number of submenus to retrieve
+ * @param {Object} [params = {}] - parameteres to configure
+ *  @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
+ *  @param {Boolean} [params.returnContent=false] - Controls what info to return
+ *  @param {String} [params.query=""] - Query string to add when searching for menu items
+ *  @param {String} [params.currentContent] The current content to calculate active and in path
+ * @return {Array}
+ */
 function getSubMenus(parentContent, levels = 1, params = {}) {
     //default properties
     const settings = {
@@ -223,6 +238,8 @@ function getSubMenus(parentContent, levels = 1, params = {}) {
 
     return iterateSubMenus(parentContent, levels, settings);
 }
+
+exports.getSubMenus = getSubMenus;
 
 // Searches for menu items and returns the query result
 function getChildMenuItems(parent, query) {
