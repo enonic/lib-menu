@@ -1,11 +1,10 @@
 const libs = {
     portal: require("/lib/xp/portal"),
     content: require("/lib/xp/content"),
-    util: require("/lib/util"),
 };
 
 const globals = {
-    appPath: libs.util.app.getJsonName(),
+    appPath: app.name.replace(/\./g, '-')
 };
 
 /**
@@ -17,10 +16,11 @@ const globals = {
  *   @param {String} [params.dividerHtml=null] - Any custom html you want appended to each item, except the last one. Common usage: '<span class="divider">/</span>'.
  *   @param {String} [params.urlType="Server"] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
  *   @param {String} [params.ariaLabel="breadcrumbs"] - The 'aria-label' attribute text on the '<nav>' element. This should be the name of the navigation, e.g "Breadcrumbs".
+ *   @param {String} [params.currentContent] - Key to content used to get the current site, Also gets content is in path or active based on this.
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
 exports.getBreadcrumbMenu = function (params = {}) {
-    // Safely take care of all incoming settings and set defaults, for use in current scope only
+    // Safely take care of all incoming settings and set defaults.
     let settings = {
         linkActiveItem: params.linkActiveItem || false,
         showHomepage: params.showHomepage || true,
@@ -28,20 +28,22 @@ exports.getBreadcrumbMenu = function (params = {}) {
         dividerHtml: params.dividerHtml || null,
         urlType: params.urlType == "absolute" ? "absolute" : "server",
         ariaLabel: params.ariaLabel || "breadcrumbs",
+        currentContent: params.currentContent ?
+            libs.content.get({ key: params.currentContent }) :
+            libs.portal.getContent()
     };
 
-    const site = libs.portal.getSite();
-    const content = libs.portal.getContent(); // Fallback to site if there's no content (like in errorHandlers).
-
+    const site = settings.currentContent ? libs.content.getSite({ key: settings.currentContent._path }) : libs.portal.getSite();
+    const content =  settings.currentContent;
     const breadcrumbItems = []; // Stores each menu item
-    const breadcrumbMenu = {}; // Stores the final JSON sent to Thymeleaf
+    const breadcrumbMenu = {}; // Stores the final JSON
 
     //If no content is found return no results
     if (content == null || content == undefined) {
         return breadcrumbItems;
     }
 
-    // Loop the entire path for current content based on the slashes. Generate one JSON item node for each item.
+    // Loop the entire path for current content based on the slashes. Generate one JSON item node for each.
     // If on frontpage, skip the path-loop
     if (content._path != site._path) {
         const arrVars = content._path.split("/");
@@ -50,10 +52,12 @@ exports.getBreadcrumbMenu = function (params = {}) {
         // Skip first item - the site - since it is handled separately.
         for (let i = 1; i < arrLength - 1; i++) {
             const lastVar = arrVars.pop();
+
             if (lastVar != "") {
                 const curItem = libs.content.get({
                     key: arrVars.join("/") + "/" + lastVar,
                 });
+
                 // Make sure item exists
                 if (curItem) {
                     const item = {};
@@ -61,8 +65,11 @@ exports.getBreadcrumbMenu = function (params = {}) {
                         path: curItem._path,
                         type: settings.urlType,
                     });
+
+                    // remove text in next major version
                     item.title = curItem.displayName;
                     item.text = curItem.displayName;
+
                     if (content._path === curItem._path) {
                         // Is current item active?
                         item.active = true;
@@ -94,6 +101,7 @@ exports.getBreadcrumbMenu = function (params = {}) {
             active: content._path === site._path,
             type: site.type,
         };
+
         breadcrumbItems.push(item);
     }
 
@@ -106,17 +114,23 @@ exports.getBreadcrumbMenu = function (params = {}) {
 };
 
 /**
- * Creates a menu tree from site
+ * Creates a menu tree structure
+ * The root site is based on execution context or the currentContent
  * @param {Number} levels - menu levels to get
- * @param {Object} [params={}] - configure the end result. see getSubMenus
+ * @param {Object} [params={}] - configure the end result
  * @param {String} [params.ariaLabel="menu"] - The aria label added to the nav element
+ *  @param {String} [params.urlType="Server"] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'
+ *  @param {Boolean} [params.returnContent] - Controls what info to return
+ *  @param {String} [params.query=""] - Query string to add when searching for menu items
+ *  @param {String} [params.currentContent] - Key (path or id) used to get the current site and if its in path or active based on this content.
  * @returns {Object}
  *  @returns {Array} object.menuItems The list of menuItems and children
  *  @returns {String} object.ariaLabel The ariaLabel used for this menu
  */
 exports.getMenuTree = function (levels, params = {}) {
-    const site = libs.portal.getSite();
+    const site = params.currentContent ? libs.content.getSite({ key: params.currentContent }) : libs.portal.getSite();
     let menuItems = [];
+
     if (site) {
         menuItems = getSubMenus(site, levels, params);
     }
@@ -163,7 +177,7 @@ function iterateSubMenus(parentContent, levels, settings) {
  * Calculates the end result for the menuItem that will be returned.
  * @param {Content} content The item in the menu we want data for
  * @param {Number} levels How deep the search should go
- * @param {object} settings seeSubmenu
+ * @param {object} settings see getSubMenus
  * @returns {Object}
  */
 function renderMenuItem(content, levels, settings) {
@@ -172,21 +186,18 @@ function renderMenuItem(content, levels, settings) {
         subMenus = iterateSubMenus(content, levels, settings);
     }
 
-    const currentContent = settings.currentContent ? settings.currentContent : libs.portal.getContent();
-
     let inPath = false;
     let isActive = false;
     // Could still be empty if on an error page or something
-    if (currentContent) {
-        if (content._path === currentContent._path) {
+    if (settings.currentContent) {
+        if (content._path === settings.currentContent._path) {
             // Is the currently viewed content the current menuitem we are processing?
             isActive = true;
-        } else if (currentContent._path.indexOf(content._path) === 0) {
+        } else if (settings.currentContent._path.indexOf(content._path) === 0) {
             // Is the menuitem we are processing in the currently viewed content's path?
             inPath = true;
         }
     }
-
 
     const menuItem = content.x[globals.appPath]["menu-item"];
     const url = libs.portal.pageUrl({
@@ -222,18 +233,22 @@ function renderMenuItem(content, levels, settings) {
  * @param {Content} parentContent - content object obtained with 'portal.getContent', 'portal.getSite' or any 'content.*' commands
  * @param {Number} [levels=1] - The number of submenus to retrieve
  * @param {Object} [params = {}] - parameteres to configure
- *  @param {String} [params.urlType=Server] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
- *  @param {Boolean} [params.returnContent=false] - Controls what info to return
- *  @param {String} [params.query=""] - Query string to add when searching for menu items
- *  @param {String} [params.currentContent] The current content to calculate active and in path
+ *  @param {string} [params.currentContent] - The content that sets the context of the menu. CurrentContent defaults to the current context content: portal.getContent().
+ *  @param {Boolean} [params.returnContent] - Controls what info to return
+ *  @param {String} [params.urlType="Server"] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'
  * @return {Array}
  */
 function getSubMenus(parentContent, levels = 1, params = {}) {
+    const currentContent = params.currentContent ?
+    libs.content.get({ key: params.currentContent }) :
+    libs.portal.getContent();
+
     //default properties
     const settings = {
         urlType: params.urlType == "absolute" ? "absolute" : "server",
         returnContent: params.returnContent != undefined ? params.returnContent : false,
         query: params.query ? params.query : "",
+        currentContent,
     };
 
     return iterateSubMenus(parentContent, levels, settings);
