@@ -1,7 +1,7 @@
 # Menu lib
 
-This library will assist you with creating different kind of menus in XP. 
-It helps you with the server side and client side code. 
+This library will assist you with creating different kind of menus in XP.
+It helps you with the server side and client side code.
 However, the client side code is optional and can be adjusted to your needs.
 
 ## Installation
@@ -28,11 +28,11 @@ Using lib-menu demands adding some code to your app:
 
 ### X-data
 
-We include an x-data called `menu-item` with this library. 
-It will be enabled in your app after adding a dependency to this library 
+We include an x-data called `menu-item` with this library.
+It will be enabled in your app after adding a dependency to this library
 (meaning you can add the `<x-data>` tag to your site.xml without having the x-data scheme in your app). Overwriting it is very easy, just place an x-data with the same name in your app and that will be used instead.
 
-It is important that you manually update your own app's `site.xml` adding this x-data (ours or your own) referencing this [x-data](https://developer.enonic.com/docs/xp/stable/cms/x-data). 
+It is important that you manually update your own app's `site.xml` adding this x-data (ours or your own) referencing this [x-data](https://developer.enonic.com/docs/xp/stable/cms/x-data).
 You can also optionally add this x-data to specific content types.
 
 After this, any content type with this x-data will now get the fields/settings for menu control.
@@ -52,7 +52,7 @@ In every controller you want to use it (Page, Part or Layout) you just `require`
 To access any of the functions from this library use:
 
 ```javascript
-var libs = {
+const libs = {
     menu: require('/lib/menu')
 };
 ```
@@ -61,12 +61,12 @@ var libs = {
 
 Get 2 levels of menu based on content setting 'Show in menu'
 ```javascript
-let menuItems = libs.menu.getMenuTree(2); 
+let menuItems = libs.menu.getMenuTree(2);
 ```
 
 Get 2 levels of menu based on content setting 'Show in menu'
 ```javascript
-let menuItems = libs.menu.getMenuTree(2, { returnContent = true }); 
+let menuItems = libs.menu.getMenuTree(2, { returnContent = true });
 ```
 
 #### getMenuTree(level, options)
@@ -76,14 +76,15 @@ let menuItems = libs.menu.getMenuTree(2, { returnContent = true });
 | `options` | {} | Options object |
 | `options.ariaLabel` | "menu" | The aria label for the menu |
 | `options.urlType`|  "server" | Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute' |
-| `options.returnContent` | false | Controls what info to return 
+| `options.returnContent` | false | Controls what info to return
 | `options.query` | ""  | Query string to add when searching for menu items
+| `options.currentContent` | content in context | Key (path or id) to content used to get the current site, Also check for in path or active based on this.
 
 <h4>Breadcrumb structure</h4>
 
 Get a breadcrumb menu for current content. AriaLabel is optional but recommended.
 ```javascript
-let breadcrumbItems = libs.menu.getBreadcrumbMenu({ navigationAriaLabel: "breadcrumbs" }); 
+let breadcrumbItems = libs.menu.getBreadcrumbMenu({ navigationAriaLabel: "breadcrumbs" });
 ```
 
 To be more flexible, subMenuItems require a content to be sent in.
