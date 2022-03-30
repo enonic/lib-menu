@@ -66,7 +66,7 @@ let menuItems = libs.menu.getMenuTree(2);
 
 Get 2 levels of menu based on content setting 'Show in menu'
 ```javascript
-let menuItems = libs.menu.getMenuTree(2, { returnContent = true });
+let menuItems = libs.menu.getMenuTree(2, { returnContent : true });
 ```
 
 #### getMenuTree(level, options)
