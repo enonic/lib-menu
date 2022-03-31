@@ -193,7 +193,7 @@ function renderMenuItem(content, levels, settings) {
         if (content._path === settings.currentContent._path) {
             // Is the currently viewed content the current menuitem we are processing?
             isActive = true;
-        } else if (settings.currentContent._path.indexOf(content._path) === 0) {
+        } else if (settings.currentContent._path.indexOf(`${content._path}/`) === 0) {
             // Is the menuitem we are processing in the currently viewed content's path?
             inPath = true;
         }
