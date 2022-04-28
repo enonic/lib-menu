@@ -75,10 +75,10 @@ let menuItems = libs.menu.getMenuTree(2, { returnContent : true });
 | `levels` | 1 | The number of submenus to retrieve |
 | `options` | {} | Options object |
 | `options.ariaLabel` | "menu" | The aria label for the menu |
-| `options.urlType`|  "server" | Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute' |
-| `options.returnContent` | false | Controls what info to return
-| `options.query` | ""  | Query string to add when searching for menu items
-| `options.currentContent` | content in context | Key (path or id) to content used to get the current site, Also check for in path or active based on this.
+| `options.urlType`|  "server" | Control type of URL to be generated for menu items 'server' or 'absolute' |
+| `options.returnContent` | false | If it should return the full content node for each menuItem |
+| `options.query` | ""  | Query string to add when searching for menu items |
+| `options.currentContent` | content in context | Key (path or id) to content used to get the current site, also checks for inPath and isActive based on this. |
 
 <h4>Breadcrumb structure</h4>
 
