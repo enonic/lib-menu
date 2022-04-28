@@ -87,12 +87,6 @@ Get a breadcrumb menu for current content. AriaLabel is optional but recommended
 let breadcrumbItems = libs.menu.getBreadcrumbMenu({ navigationAriaLabel: "breadcrumbs" });
 ```
 
-To be more flexible, subMenuItems require a content to be sent in.
-```javascript
-const content = libs.portal.getContent();
-let subMenuItems = libs.menu.getSubMenus(content,1); // Get 1 level of submenu (from current content)
-```
-
 ### Thymeleaf
 
 * We've included Thymeleaf fragments you can use for the different types of menues we have. In `2.0.0` version.
