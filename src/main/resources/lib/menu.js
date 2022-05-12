@@ -17,6 +17,7 @@ const globals = {
  *   @param {String} [params.urlType="Server"] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'.
  *   @param {String} [params.ariaLabel="breadcrumbs"] - The 'aria-label' attribute text on the '<nav>' element. This should be the name of the navigation, e.g "Breadcrumbs".
  *   @param {String} [params.currentContent] - Key to content used to get the current site, Also gets content is in path or active based on this.
+ *   @param {String} [params.returnContent] - Controls what info to return
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
 exports.getBreadcrumbMenu = function (params = {}) {
@@ -30,7 +31,8 @@ exports.getBreadcrumbMenu = function (params = {}) {
         ariaLabel: params.ariaLabel || "breadcrumbs",
         currentContent: params.currentContent ?
             libs.content.get({ key: params.currentContent }) :
-            libs.portal.getContent()
+            libs.portal.getContent(),
+        returnContent: params.returnContent || false
     };
 
     const site = settings.currentContent ? libs.content.getSite({ key: settings.currentContent._path }) : libs.portal.getSite();
@@ -82,6 +84,11 @@ exports.getBreadcrumbMenu = function (params = {}) {
                         item.url = curItemUrl;
                     }
                     item.type = curItem.type;
+
+                    if (settings.returnContent) {
+                        item.content = curItem;
+                    }
+
                     breadcrumbItems.push(item);
                 }
             }
@@ -101,6 +108,10 @@ exports.getBreadcrumbMenu = function (params = {}) {
             active: content._path === site._path,
             type: site.type,
         };
+
+        if (settings.returnContent) {
+          item.content = site;
+        }
 
         breadcrumbItems.push(item);
     }
