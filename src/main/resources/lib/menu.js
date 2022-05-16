@@ -20,6 +20,7 @@ const globals = {
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
 exports.getBreadcrumbMenu = function (params) {
+    params = params || {};
     // Safely take care of all incoming settings and set defaults.
     let settings = {
         linkActiveItem: params.linkActiveItem || false,
@@ -128,9 +129,7 @@ exports.getBreadcrumbMenu = function (params) {
  *  @returns {String} object.ariaLabel The ariaLabel used for this menu
  */
 exports.getMenuTree = function (levels, params) {
-    if (!params) {
-        params = {};
-    }
+    params = params || {};
     const site = params.currentContent ? libs.content.getSite({ key: params.currentContent }) : libs.portal.getSite();
     let menuItems = [];
 
@@ -242,15 +241,12 @@ function renderMenuItem(content, levels, settings) {
  * @return {Array}
  */
 function getSubMenus(parentContent, levels, params) {
-    if (!levels) {
-        levels = 1;
-    }
-    if (!params) {
-        params = {};
-    }
+    levels = levels || 1;
+    params = params || {};
+
     const currentContent = params.currentContent ?
-    libs.content.get({ key: params.currentContent }) :
-    libs.portal.getContent();
+        libs.content.get({ key: params.currentContent }) :
+        libs.portal.getContent();
 
     //default properties
     const settings = {
@@ -271,6 +267,8 @@ function getChildMenuItems(parent, query) {
         count: 1000,
         query: query,
         sort: parent.childOrder,
+        //Used for testing only
+        parent,
         filters: {
             boolean: {
                 must: [
