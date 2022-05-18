@@ -20,7 +20,8 @@ const globals = {
  *   @param {String} [params.returnContent] - Controls what info to return
  * @returns {Object} - The set of breadcrumb menu items (as array) and needed settings.
  */
-exports.getBreadcrumbMenu = function (params = {}) {
+exports.getBreadcrumbMenu = function (params) {
+    params = params || {};
     // Safely take care of all incoming settings and set defaults.
     let settings = {
         linkActiveItem: params.linkActiveItem || false,
@@ -138,7 +139,8 @@ exports.getBreadcrumbMenu = function (params = {}) {
  *  @returns {Array} object.menuItems The list of menuItems and children
  *  @returns {String} object.ariaLabel The ariaLabel used for this menu
  */
-exports.getMenuTree = function (levels, params = {}) {
+exports.getMenuTree = function (levels, params) {
+    params = params || {};
     const site = params.currentContent ? libs.content.getSite({ key: params.currentContent }) : libs.portal.getSite();
     let menuItems = [];
 
@@ -152,8 +154,8 @@ exports.getMenuTree = function (levels, params = {}) {
     }
 
     return {
-        menuItems,
-        ariaLabel,
+        menuItems: menuItems,
+        ariaLabel: ariaLabel,
     };
 };
 
@@ -249,17 +251,20 @@ function renderMenuItem(content, levels, settings) {
  *  @param {String} [params.urlType="Server"] - Control type of URL to be generated for menu items, default is 'server', only other option is 'absolute'
  * @return {Array}
  */
-function getSubMenus(parentContent, levels = 1, params = {}) {
+function getSubMenus(parentContent, levels, params) {
+    levels = levels || 1;
+    params = params || {};
+
     const currentContent = params.currentContent ?
-    libs.content.get({ key: params.currentContent }) :
-    libs.portal.getContent();
+        libs.content.get({ key: params.currentContent }) :
+        libs.portal.getContent();
 
     //default properties
     const settings = {
         urlType: params.urlType == "absolute" ? "absolute" : "server",
         returnContent: params.returnContent != undefined ? params.returnContent : false,
         query: params.query ? params.query : "",
-        currentContent,
+        currentContent: currentContent,
     };
 
     return iterateSubMenus(parentContent, levels, settings);
@@ -271,8 +276,10 @@ exports.getSubMenus = getSubMenus;
 function getChildMenuItems(parent, query) {
     return libs.content.query({
         count: 1000,
-        query,
+        query: query,
         sort: parent.childOrder,
+        //Used for testing only
+        parent,
         filters: {
             boolean: {
                 must: [
