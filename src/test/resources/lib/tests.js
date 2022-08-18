@@ -2,7 +2,7 @@ const t = require('/lib/xp/testing');
 
 // Reused value
 const xDataMenuItem = {
-    // *shurug* Default value?
+    // *shrug* Default value?
     "myapplication": {
         "menu-item": {
             "menuItem": true
@@ -30,6 +30,7 @@ const defaultData = {
     getContent: null
 }
 
+// Mockes before require
 t.mock("/lib/xp/portal", {
     setTestData: function(mockNodes) {
         this.data = mockNodes;
@@ -63,8 +64,6 @@ t.mock("/lib/xp/content", {
 
 const portal = require("/lib/xp/portal");
 const contentLib = require("/lib/xp/content");
-
-// Portal needs to be mocked before require
 const menuLib = require("/lib/menu");
 
 exports.testMenuEmpty = function () {
@@ -159,8 +158,6 @@ exports.testInPathActive = function() {
 
     let result = menuLib.getMenuTree(3);
 
-    log.info(JSON.stringify(result, null, 4));
-
     t.assertEquals(true, result.menuItems[0].inPath, "Testing site is in the menu path");
 
     t.assertEquals(true, result.menuItems[1].inPath, "Testing site child is in the menu path");
@@ -179,6 +176,7 @@ exports.testInPathActive = function() {
 exports.test
 
 /**
+ * //TODO
  * exports.testOverrideMenuName = function() {
  *
  * }
