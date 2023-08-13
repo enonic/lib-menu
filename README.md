@@ -99,6 +99,73 @@ let breadcrumbItems = libs.menu.getBreadcrumbMenu({ navigationAriaLabel: "breadc
 
 We've also included a bunch of example code of ready-to-go Thymeleaf in the `/_examples/views/` folder, have a look there if you need to build something custom. Also read the readme-files in those folders for more information.
 
+### GraphQL Schemas
+
+This library comes with readily prepared GraphQL-types for usage in headless projects.
+
+```javascript
+var libMenu = require("/lib/menu")
+var libGraphql = require("/lib/graphql")
+var libMenuGraphql = require("/lib/menu/graphql")
+
+var schema = createSchema({
+  applications: ["com.myapplication.app"],
+  
+  creationCallbacks: {
+    HeadlessCms: function(context, params) {
+      params.fields.getMenuTree = {
+        type: libMenuGraphql.createGraphQLMenuTree(context),
+        args: {
+          level: libGraphql.GraphQLInt,
+          path: libGraphql.GraphQLID,
+        },
+        resolve: function(env) {
+          return libMenu.getMenuTree(env.args.level ? env.args.level : 2, { 
+            path: env.args.path 
+          });
+        }
+      };
+
+      params.fields.getBreadcrumbMenu = {
+        type: createGraphQLBreadcrumbsMenu(context),
+        args: {
+          path: libGraphql.GraphQLID,
+        },
+        resolve: function(env) {
+          return libMenu.getBreadcrumbMenu({ 
+            path: env.args.path 
+          });
+        },
+      };
+    }
+  }
+});
+```
+
+Now you can use fully typed GraphQL queries with breadcrumbs and menu tree.
+
+```graphql
+query ContentByPath($path: ID) {
+  guillotine {
+    get(key: $path) {
+      displayName
+    }
+    
+    breadcrumbs: getBreadcrumbMenu(path: $path) {
+      title
+      url
+    }
+    
+    menu: getMenuTree(level:1, path: $path) {
+      title
+      url
+      inPath
+      isActive
+    }
+  }
+}
+```
+
 ## Compatibility
 
 | Lib version        | XP version |
