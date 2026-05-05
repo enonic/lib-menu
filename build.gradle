@@ -2,18 +2,24 @@ plugins {
 	id 'java' // Needed for libs building without xp.apps plugin
 	id 'maven-publish'
 	id 'com.enonic.defaults' version '2.1.6'
-	id 'com.enonic.xp.base' version '3.6.2'
+	id 'com.enonic.xp.base'
 }
 
 dependencies {
-	implementation "com.enonic.xp:lib-content:${xpVersion}"
-	implementation "com.enonic.xp:lib-portal:${xpVersion}"
+	implementation xplibs.content
+	implementation xplibs.portal
 
 	testImplementation "com.enonic.xp:testing:${xpVersion}"
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 repositories {
 	mavenLocal()
 	mavenCentral()
 	xp.enonicRepo()
+}
+
+test {
+	useJUnitPlatform()
 }
