@@ -1,0 +1,17 @@
+kind: "Mixin"
+title: "Menu settings"
+form:
+  - type: "CheckBox"
+    name: "menuItem"
+    label: "Show in menu?"
+    helpText: "Check this to include this content in the menu."
+    occurrences:
+      min: 0
+      max: 1
+  - type: "TextLine"
+    name: "menuName"
+    label: "Override menu name"
+    helpText: "Name to be used in menu, default is to use the content's DisplayName."
+    occurrences:
+      min: 0
+      max: 1
