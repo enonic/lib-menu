@@ -10,8 +10,8 @@ dependencies {
 	implementation xplibs.portal
 
 	testImplementation "com.enonic.xp:testing:${xpVersion}"
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testRuntimeOnly libs.junit.jupiter.engine
+	testRuntimeOnly libs.junit.platform.launcher
 }
 
 repositories {
