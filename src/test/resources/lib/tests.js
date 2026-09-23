@@ -118,7 +118,7 @@ const testDataMultiple = {
     },
     getQueryResult: function(params) {
         if (!params) return {hits: []}
-        if (params.parent && params.parent._path == "/test") {
+        if (params.parent == 1122) {
             return {
                 hits: [{
                     _id: 1133,
@@ -132,7 +132,7 @@ const testDataMultiple = {
                 }]
             }
         }
-        else if (params.parent && params.parent._path == "/test/content") {
+        else if (params.parent == 1133) {
             return {
                 hits: [{
                     _id: 1144,
