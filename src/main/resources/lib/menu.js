@@ -279,7 +279,7 @@ function getChildMenuItems(parent, query) {
         query: query,
         sort: parent.childOrder,
         //Used for testing only
-        parent,
+        parent: parent._id,
         filters: {
             boolean: {
                 must: [
